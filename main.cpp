@@ -1,6 +1,7 @@
 #include <iostream>
-#include "board.cpp"
-
+#include "board.h"
+#include "enums.h"
+#include "undo.h"
 
 using namespace std;
 

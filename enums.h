@@ -2,15 +2,20 @@
 #define _DEF_
 
 #define BOARD_SIZE 120
-
+#define MAX_GAME_MOVES 2048
 
 typedef unsigned long long U64;
 
 enum {EMPTY, wP, wN, wB, wR, wQ, wK, bP, bN, bB, bR, bQ, bW}; // already enumerated incrementally
+
 enum {FILE_A, FILE_B, FILE_C, FILE_D, FILE_E, FILE_F, FILE_G, FILE_H, FILE_NONE};
 enum {ROW_A, ROW_B, ROW_C, ROW_D, ROW_E, ROW_F, ROW_G, ROW_H, ROW_NONE};
 
 enum {WHITE, BLACK, BOTH};
+
+enum {whiteKingCastle = 1, whiteQueenCastle = 2, blackKingCastle = 4, blackQueenCastle = 8};
+// Castle permission is going to be represented by bits
+// 1 1 1 1 --> All four castling possibilities are allowed
 
 enum {
   A1 = 21, B1, C1, D1, E1, F1, G1, H1,
@@ -21,7 +26,7 @@ enum {
   A6 = 61, B6, C6, D6, E6, F6, G6, H6,
   A7 = 71, B7, C7, D7, E7, F7, G7, H7,
   A8 = 81, B8, C8, D8, E8, F8, G8, H8, NO_SQUARE
-}
+};
 
 
 #endif

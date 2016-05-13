@@ -1,1 +1,2 @@
-g++ -g -o 
+all:
+	g++ -g -Wall main.cpp -o chess

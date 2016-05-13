@@ -1,4 +1,8 @@
+#ifndef BOARD
+#define BOARD
+
 #include "enums.h"
+#include "undo.h"
 
 struct board{
   int pieces[BOARD_SIZE];
@@ -9,6 +13,7 @@ struct board{
   int fiftyMoves;
   int ply;
   int plyHistory;
+
   U64 posKey;
 
 
@@ -16,4 +21,10 @@ struct board{
   int numMajorPieces[3];
   int numMinorPieces[3];
   int numBigPieces[3];
+
+  int castlePermission;
+
+  undo history[MAX_GAME_MOVES];
 };
+
+#endif
