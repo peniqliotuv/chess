@@ -3,6 +3,9 @@
 int SQ120[BOARD_SIZE];
 int SQ64[64];
 
+U64 setMask[64];
+U64 clearMask[64];
+
 void initBoard(){
   int file = FILE_A;
   int row = ROW_1;
@@ -26,6 +29,20 @@ void initBoard(){
   }
 }
 
+void initBitMasks(){
+  for (int i= 0; i < 64; i++){
+    setMask[i] = 0ULL;
+    clearMask[i] = 0ULL;
+  }
+
+  for (int i = 0; i < 64; i++){
+    setMask[i] |= (1ULL << i);
+    clearMask[i] = ~setMask[i];
+  }
+
+}
+
 void initialize(){
   initBoard();
+  initBitMasks();
 }

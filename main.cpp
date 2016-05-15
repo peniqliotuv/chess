@@ -13,12 +13,11 @@ int main(){
   cout << "Printing Bit Board!" << endl;
   U64 bitboard = 0ULL;
 
-  bitboard |= (1ULL << SQ120[D5]);
-  printBitBoard(bitboard);
-
-  cout << "Number of Bits: " << countBits(bitboard) << endl;
-
-
+  for (int i=0; i<64; i++){
+    cout << "Index: " << i << endl;
+    printBitBoard(setMask[i]);
+    cout << endl;
+  }
 
   return 0;
 }

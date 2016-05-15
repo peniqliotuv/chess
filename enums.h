@@ -4,14 +4,17 @@
 //MACROS
 #define BOARD_SIZE 120
 #define MAX_GAME_MOVES 2048
-#define toSquareNumber(row, file) ( (21 + (file) ) + ( (row) * 10 ));
-
+#define toSquareNumber(row, file) ( (21 + (file) ) + ( (row) * 10 ))
+#define clearBit(bb, sq) ((bb) &= clearMask[(sq)])
+#define setBit(bb, sq) ((bb) |= setMask[(sq)])
 
 typedef unsigned long long U64;
 //GLOBAL VARIABLES
 
 extern int SQ120[BOARD_SIZE];
 extern int SQ64[64];
+extern U64 clearMask[64];
+extern U64 setMask[64];
 
 //FUNCTIONS
 
