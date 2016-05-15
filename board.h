@@ -25,6 +25,8 @@ struct board{
   int castlePermission;
 
   undo history[MAX_GAME_MOVES];
+  //indexed by ply
+  
 };
 
 #endif
