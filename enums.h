@@ -15,6 +15,7 @@ extern int SQ64[64];
 
 //FUNCTIONS
 
+extern void printBitBoard(U64 bitBoard);
 extern void initialize();
 
 //ENUMERATIONS
