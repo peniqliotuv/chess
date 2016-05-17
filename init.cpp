@@ -1,10 +1,22 @@
 #include "enums.h"
+//MACRO
+#define RAND_64 (	(U64)rand() + \
+					(U64)rand() << 15 + \
+					(U64)rand() << 30 + \
+					(U64)rand() << 45 + \
+					((U64)rand() & 0xf) << 60    )
 
 int SQ120[BOARD_SIZE];
 int SQ64[64];
 
+//Mask-Bits
 U64 setMask[64];
 U64 clearMask[64];
+
+//Randomly generated hash keys
+U64 sideKey;
+U64 pieceKeys[13][120]; //indexed by pieces and by square
+U64 castleKeys[16]; //0 0 0 0 -> 2^4 castle keys
 
 void initBoard(){
   int file = FILE_A;
@@ -42,7 +54,20 @@ void initBitMasks(){
 
 }
 
+void initHashKeys(){
+  for (int i=0; i<13; i++){
+    for (int j=0; j<120; j++){
+      pieceKeys[i][j] = RAND_64;
+    }
+  }
+  for (int i=0; i<16; i++){
+    castleKeys[i] = RAND_64;
+  }
+  sideKey = RAND_64;
+}
+
 void initialize(){
   initBoard();
   initBitMasks();
+  initHashKeys();
 }

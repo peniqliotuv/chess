@@ -1,6 +1,10 @@
 #ifndef ENUMERATIONS
 #define ENUMERATIONS
 
+#include <cstdlib>
+
+typedef unsigned long long U64;
+
 //MACROS
 #define BOARD_SIZE 120
 #define MAX_GAME_MOVES 2048
@@ -8,31 +12,28 @@
 #define clearBit(bb, sq) ((bb) &= clearMask[(sq)])
 #define setBit(bb, sq) ((bb) |= setMask[(sq)])
 
-typedef unsigned long long U64;
 //GLOBAL VARIABLES
-
 extern int SQ120[BOARD_SIZE];
 extern int SQ64[64];
 extern U64 clearMask[64];
 extern U64 setMask[64];
+extern U64 pieceKeys[13][120];
+extern U64 sideKey;
+extern U64 castleKeys[16];
 
 //FUNCTIONS
-
 extern void printBitBoard(U64 bitBoard);
 extern void initialize();
+extern void generatePosKey();
 
 //ENUMERATIONS
 enum {EMPTY, wP, wN, wB, wR, wQ, wK, bP, bN, bB, bR, bQ, bW}; // already enumerated incrementally
-
 enum {FILE_A, FILE_B, FILE_C, FILE_D, FILE_E, FILE_F, FILE_G, FILE_H, FILE_NONE};
 enum {ROW_1, ROW_2, ROW_3, ROW_4, ROW_5, ROW_6, ROW_7, ROW_8, ROW_NONE};
-
 enum {WHITE, BLACK, BOTH};
-
 enum {whiteKingCastle = 1, whiteQueenCastle = 2, blackKingCastle = 4, blackQueenCastle = 8};
 // Castle permission is going to be represented by bits
 // 1 1 1 1 --> All four castling possibilities are allowed
-
 enum {
   A1 = 21, B1, C1, D1, E1, F1, G1, H1,
   A2 = 31, B2, C2, D2, E2, F2, G2, H2,
@@ -43,6 +44,5 @@ enum {
   A7 = 71, B7, C7, D7, E7, F7, G7, H7,
   A8 = 81, B8, C8, D8, E8, F8, G8, H8, NO_SQUARE
 };
-
 
 #endif
