@@ -30,7 +30,7 @@ struct board{
   int pieceList[13][10];
   //13 total pieces, 10 possible of each piece
 
-  
+
 };
 
 #endif

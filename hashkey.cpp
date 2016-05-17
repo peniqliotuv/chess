@@ -1,5 +1,4 @@
 #include "enums.h"
-#include "board.h"
 #include <cstdlib>
 
 U64 generatePosKey(const board& b){

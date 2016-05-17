@@ -1,6 +1,5 @@
 #ifndef ENUMERATIONS
 #define ENUMERATIONS
-
 #include <cstdlib>
 
 typedef unsigned long long U64;
@@ -21,11 +20,6 @@ extern U64 pieceKeys[13][120];
 extern U64 sideKey;
 extern U64 castleKeys[16];
 
-//FUNCTIONS
-extern void printBitBoard(U64 bitBoard);
-extern void initialize();
-extern void generatePosKey();
-
 //ENUMERATIONS
 enum {EMPTY, wP, wN, wB, wR, wQ, wK, bP, bN, bB, bR, bQ, bW}; // already enumerated incrementally
 enum {FILE_A, FILE_B, FILE_C, FILE_D, FILE_E, FILE_F, FILE_G, FILE_H, FILE_NONE};
@@ -44,5 +38,45 @@ enum {
   A7 = 71, B7, C7, D7, E7, F7, G7, H7,
   A8 = 81, B8, C8, D8, E8, F8, G8, H8, NO_SQUARE
 };
+
+struct undo{
+  int move;
+  int castlePermission;
+  int enPassent;
+  int fiftyMoves;
+  U64 posKey;
+};
+
+struct board{
+  int pieces[BOARD_SIZE];
+  U64 pawns[3];
+  int KingSquare[2];
+  int side;
+  int enPassent;
+  int fiftyMoves;
+  int ply;
+  int plyHistory;
+
+  U64 posKey;
+
+  int numPieces[13]; //How many exist at this index in the board
+  int numMajorPieces[3];
+  int numMinorPieces[3];
+  int numBigPieces[3];
+
+  int castlePermission;
+
+  undo history[MAX_GAME_MOVES];
+  //indexed by ply
+
+  int pieceList[13][10];
+  //13 total pieces, 10 possible of each piece
+};
+
+
+//FUNCTIONS
+extern void printBitBoard(U64 bitBoard);
+extern void initialize();
+extern U64 generatePosKey(const board& b);
 
 #endif

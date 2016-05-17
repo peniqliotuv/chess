@@ -1,7 +1,5 @@
 #include <iostream>
-#include "board.h"
 #include "enums.h"
-#include "undo.h"
 #include "bitboard.h"
 
 using namespace std;
