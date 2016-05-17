@@ -36,7 +36,7 @@ enum {
   A5 = 51, B5, C5, D5, E5, F5, G5, H5,
   A6 = 61, B6, C6, D6, E6, F6, G6, H6,
   A7 = 71, B7, C7, D7, E7, F7, G7, H7,
-  A8 = 81, B8, C8, D8, E8, F8, G8, H8, NO_SQUARE
+  A8 = 81, B8, C8, D8, E8, F8, G8, H8, NO_SQUARE, OFFBOARD
 };
 
 struct undo{
@@ -50,7 +50,7 @@ struct undo{
 struct board{
   int pieces[BOARD_SIZE];
   U64 pawns[3];
-  int KingSquare[2];
+  int kingSquare[2];
   int side;
   int enPassent;
   int fiftyMoves;
@@ -78,5 +78,6 @@ struct board{
 extern void printBitBoard(U64 bitBoard);
 extern void initialize();
 extern U64 generatePosKey(const board& b);
+extern void resetBoard();
 
 #endif
