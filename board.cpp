@@ -1,7 +1,20 @@
 #include <cstdlib>
 #include "enums.h"
-#include <string>
 #include <iostream>
+#include <exception>
+
+//Exceptions
+class castlePermBounds : public std::exception{
+  virtual const char* what() const throw(){
+    return "Castle Permission is out of bounds";
+  }
+};
+
+//DATA MEMBERS:
+char pieceChar[] = ".PNBRQKpnbrqk";
+char sideChar[] = "wb-";
+char rowChar[] = "12345678";
+char fileChar[] = "abcdefgh";
 
 //Resets the board to empty
 void resetBoard(board &b){
@@ -91,10 +104,6 @@ int parseFen(char* fen, board& b){
     fen++;
   }
 
-  if (*fen != 'w' || *fen != 'b'){
-    std::cout << "you have an error" << std::endl;
-  }//error checking
-
   if (*fen == 'w'){
     b.side = WHITE;
   }
@@ -118,8 +127,8 @@ int parseFen(char* fen, board& b){
   fen++;
 
   if (b.castlePermission < 0 || b.castlePermission > 15){
-    std::cout << "castleperm error" << std::endl;
-  } // error checking
+    throw castlePermBounds();
+  }
 
   if (*fen != '-'){
     file = fen[0] - 'a';
@@ -128,4 +137,34 @@ int parseFen(char* fen, board& b){
   }
   b.posKey = generatePosKey(b);
   return 0;
+}
+
+void printBoard(const board& b){
+  int sq, file, row, piece;
+
+  std::cout << "*******GAME BOARD*******" << std::endl;
+  for (row = ROW_8; row >= ROW_1; row--){
+    std::cout << row+1 << "   ";
+    for (file = FILE_A; file <= FILE_H; file++){
+      sq = toSquareNumber(file, row);
+      piece = b.pieces[sq];
+      std::cout << pieceChar[piece] << " ";
+    }
+    std::cout << std::endl;
+  }
+
+  std::cout << std::endl << "    ";
+  for (file = FILE_A; file <= FILE_H; file++){
+    char f = 'a' + file;
+    std::cout << f << " ";
+  }
+  std::cout << std::endl;
+  std::cout << "Side: " << sideChar[b.side] << std::endl;
+  std::cout << "En Passent: " << std::dec << b.enPassent << std::endl; // In base-10
+  std:: cout << "Castle Permissions: ";
+  b.castlePermission & whiteKingCastle ? (std::cout << 'K') : (std::cout << '-');
+  b.castlePermission & whiteQueenCastle ? (std::cout << 'Q') : (std::cout << '-');
+  b.castlePermission & blackKingCastle ? (std::cout << 'k') : (std::cout << '-');
+  b.castlePermission & blackQueenCastle ? (std::cout << 'q') : (std::cout << '-');
+  std::cout << std::endl << "Position Key: " << std::hex<< b.posKey << std::endl;
 }

@@ -33,7 +33,7 @@ void initBoard(){
   }
   for (row = ROW_1; row <= ROW_8; row++){
     for (file = FILE_A; file <= FILE_H; file++){
-      square120 = toSquareNumber(row, file);
+      square120 = toSquareNumber(file, row);
       SQ64[square64] = square120;
       SQ120[square120] = square64;
       square64++;
