@@ -1,9 +1,9 @@
 #include "enums.h"
 //MACRO
-#define RAND_64 (	(U64)rand() + \
-					(U64)rand() << 15 + \
-					(U64)rand() << 30 + \
-					(U64)rand() << 45 + \
+#define RAND_64 (	(U64)rand() | \
+					(U64)rand() << 15 | \
+					(U64)rand() << 30 | \
+					(U64)rand() << 45 | \
 					((U64)rand() & 0xf) << 60    )
 
 int SQ120[BOARD_SIZE];
