@@ -10,6 +10,7 @@ typedef unsigned long long U64;
 #define toSquareNumber(row, file) ( (21 + (file) ) + ( (row) * 10 ))
 #define clearBit(bb, sq) ((bb) &= clearMask[(sq)])
 #define setBit(bb, sq) ((bb) |= setMask[(sq)])
+#define START_FEN "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
 
 //GLOBAL VARIABLES
 extern int SQ120[BOARD_SIZE];
@@ -21,7 +22,7 @@ extern U64 sideKey;
 extern U64 castleKeys[16];
 
 //ENUMERATIONS
-enum {EMPTY, wP, wN, wB, wR, wQ, wK, bP, bN, bB, bR, bQ, bW}; // already enumerated incrementally
+enum {EMPTY, wP, wN, wB, wR, wQ, wK, bP, bN, bB, bR, bQ, bW, bK}; // already enumerated incrementally
 enum {FILE_A, FILE_B, FILE_C, FILE_D, FILE_E, FILE_F, FILE_G, FILE_H, FILE_NONE};
 enum {ROW_1, ROW_2, ROW_3, ROW_4, ROW_5, ROW_6, ROW_7, ROW_8, ROW_NONE};
 enum {WHITE, BLACK, BOTH};
