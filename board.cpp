@@ -10,7 +10,7 @@ class castlePermBounds : public std::exception{
   }
 };
 
-//DATA MEMBERS:
+//Data Members:
 char pieceChar[] = ".PNBRQKpnbrqk";
 char sideChar[] = "wb-";
 char rowChar[] = "12345678";
@@ -182,7 +182,7 @@ void printBoard(const board& b){
   std::cout << std::endl;
   std::cout << "Side: " << sideChar[b.side] << std::endl;
   std::cout << "En Passent: " << std::dec << b.enPassent << std::endl; // In base-10
-  std:: cout << "Castle Permissions: ";
+  std::cout << "Castle Permissions: ";
   b.castlePermission & whiteKingCastle ? (std::cout << 'K') : (std::cout << '-');
   b.castlePermission & whiteQueenCastle ? (std::cout << 'Q') : (std::cout << '-');
   b.castlePermission & blackKingCastle ? (std::cout << 'k') : (std::cout << '-');

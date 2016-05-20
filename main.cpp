@@ -10,13 +10,14 @@ using namespace std;
 
 int main(){
   initialize();
-  board* b = new board;
+/*  board* b = new board;
   parseFen(START_FEN, *b);
   printBoard(*b);
   parseFen(FEN_1, *b);
   printBoard(*b);
   parseFen(FEN_2, *b);
   printBoard(*b);
+*/
 
   return 0;
 }

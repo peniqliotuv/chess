@@ -21,6 +21,8 @@ extern U64 setMask[64];
 extern U64 pieceKeys[13][120];
 extern U64 sideKey;
 extern U64 castleKeys[16];
+extern int fileArray[BOARD_SIZE];
+extern int rowArray[BOARD_SIZE];
 //board.cpp
 extern char pieceChar[];
 extern char sideChar[];
