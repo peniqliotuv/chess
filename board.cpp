@@ -44,6 +44,27 @@ void resetBoard(board &b){
   b.fiftyMoves = 0;
 }
 
+void updateMateriaList(board& b){
+  int piece, sq, color;
+  for (int i=0; i<BOARD_SIZE; i++){
+    sq = i;
+    piece = b.pieces[i];
+    if (piece != EMPTY && piece != OFFBOARD){
+      color = pieceColor[piece];
+      if (isBig[piece]) b.numBigPieces[color]++;
+      if (isMinor[piece]) b.numMinorPieces[color]++;
+      if (isMajor[piece]) b.numMajorPieces[color]++;
+
+      b.materialValue[color] += pieceValue[color];
+
+      b.pieceList[piece][b.numPieces[piece]] = sq;
+      b.numPieces[piece]++;
+      if (piece == wK) b.kingSquare[color] = sq;
+      else if (piece == bK) b.kingSquare[color] = sq;
+    }
+  }
+}
+
 int parseFen(char* fen, board& b){
   int row = ROW_8;
   int file = FILE_A;
