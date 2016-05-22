@@ -1,6 +1,6 @@
 all:
 	@echo "Building Chess!"
-	g++ -g -Wall main.cpp init.cpp hashkey.cpp bitboard.cpp board.cpp pieces.cpp -o chess
+	g++ -g -Wall main.cpp init.cpp hashkey.cpp bitboard.cpp board.cpp pieces.cpp threats.cpp -o chess
 
 clean:
 	@echo "~All Clean~"

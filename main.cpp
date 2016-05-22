@@ -22,6 +22,7 @@ int main(){
   checkBoard(*b);
 
 
+
 /*  board* b = new board;
   parseFen(START_FEN, *b);
   printBoard(*b);

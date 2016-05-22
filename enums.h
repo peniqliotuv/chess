@@ -49,6 +49,11 @@ extern int isMajor[13];
 extern int isMinor[13];
 extern int pieceValue[13];
 extern int pieceColor[13];
+//threats.cpp
+extern const int knightMove[8];
+extern const int rookMove[4];
+extern const int bishopMove[4];
+extern const int kingMove[8];
 
 /***** ENUMERATIONS *****/
 enum {EMPTY, wP, wN, wB, wR, wQ, wK, bP, bN, bB, bR, bQ, bK}; // already enumerated incrementally
