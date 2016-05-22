@@ -10,19 +10,19 @@ char fileChar[] = "abcdefgh";
 
 //Resets the board to empty
 void resetBoard(board &b){
-  for (int i=0; i<BOARD_SIZE; i++){
+  for (int i=0; i<BOARD_SIZE; ++i){
     b.pieces[i] = OFFBOARD;
   }
-  for (int i=0; i<64; i++){
+  for (int i=0; i<64; ++i){
     b.pieces[SQ64[i]] = EMPTY;
   }
-  for (int i=0; i<3; i++){
+  for (int i=0; i<3; ++i){
     b.numMajorPieces[i] = 0;
     b.numMinorPieces[i] = 0;
     b.numBigPieces[i] = 0;
     b.pawns[i] = 0ULL;
   }
-  for (int i=0; i<13; i++){
+  for (int i=0; i<13; ++i){
     b.numPieces[i] = 0;
   }
 
@@ -38,7 +38,7 @@ void resetBoard(board &b){
 
 void updateMateriaList(board& b){
   int piece, sq, color;
-  for (int i=0; i<BOARD_SIZE; i++){
+  for (int i=0; i<BOARD_SIZE; ++i){
     sq = i;
     piece = b.pieces[i];
     if (piece != EMPTY && piece != OFFBOARD){
@@ -81,14 +81,14 @@ int checkBoard(const board& b){
 
   int sq120, color, pcount, tempPiece;
 
-  for (int i = wP; i <= bK; i++){
-    for (int j = 0; j < b.numPieces[i]; j++){
+  for (int i = wP; i <= bK; ++i){
+    for (int j = 0; j < b.numPieces[i]; ++j){
       sq120 = b.pieceList[i][j];
       if (b.pieces[sq120] != i) throw pieceListException();
     }
   }
 
-  for (int i = 0; i < 64; i++){
+  for (int i = 0; i < 64; ++i){
     sq120 = SQ64[i];
     tempPiece = b.pieces[sq120];
     temp_numPieces[tempPiece]++;
@@ -100,7 +100,7 @@ int checkBoard(const board& b){
     temp_materialValue[color] += pieceValue[color];
   }
 
-  for (int i = wP; i<= bK; i++){
+  for (int i = wP; i<= bK; ++i){
     if (temp_numPieces[i] != b.numPieces[i]){
       throw pieceListException();
     }
@@ -196,7 +196,7 @@ int parseFen(char* fen, board& b){
             return -1;
       }
 
-    for (int i=0; i<count; i++){
+    for (int i=0; i<count; ++i){
         sq64 = row*8 + file;
         sq120 = SQ64[sq64];
         if (piece != EMPTY){
@@ -214,7 +214,7 @@ int parseFen(char* fen, board& b){
     b.side = BLACK;
   }
   fen += 2;
-  for (int i=0; i<4; i++){
+  for (int i=0; i<4; ++i){
     if (*fen == ' '){
       break;
     }
@@ -249,7 +249,7 @@ void printBoard(const board& b){
   std::cout << "*******GAME BOARD*******" << std::endl;
   for (row = ROW_8; row >= ROW_1; row--){
     std::cout << row+1 << "   ";
-    for (file = FILE_A; file <= FILE_H; file++){
+    for (file = FILE_A; file <= FILE_H; ++file){
       sq = toSquareNumber(file, row);
       piece = b.pieces[sq];
       std::cout << pieceChar[piece] << " ";
@@ -258,7 +258,7 @@ void printBoard(const board& b){
   }
 
   std::cout << std::endl << "    ";
-  for (file = FILE_A; file <= FILE_H; file++){
+  for (file = FILE_A; file <= FILE_H; ++file){
     char f = 'a' + file;
     std::cout << f << " ";
   }

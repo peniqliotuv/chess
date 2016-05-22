@@ -4,10 +4,10 @@
 #include "enums.h"
 
 bool isKnight(int p);
-bool isRook(int p);
-bool isBishop(int p);
+bool isRookQueen(int p);
+bool isBishopQueen(int p);
 bool isKing(int p);
 
-int sqAttacked(const int sq, const int side, const board& b);
+bool sqAttacked(const int sq, const int side, const board& b);
 
 #endif
