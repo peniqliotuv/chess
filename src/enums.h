@@ -27,6 +27,20 @@ class pieceListException : public std::exception{
 #define setBit(bb, sq) ((bb) |= setMask[(sq)])
 #define START_FEN "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
 
+#define FROMSQ(m) ( (m) & 0x7F);
+#define TOSQ(m) ( ( (m) >> 7) & 0x7F);
+#define CAPTURED(m) ( ( (m) >> 14) & 0xF); //what piece was captured
+#define PROMOTED(m) ( ( (m) >> 20) & 0xF);
+
+#define EPFLAG(m) 0x40000
+#define PAWNFLAG(m) 0x80000
+#define CASTLEFLAG(m) 0x1000000
+
+#define ISCAPTURE(m) 0x7C000 //is it a capturing move?
+#define ISPROMOTION(m) 0xF00000 //is it a promoting move?
+
+
+
 /***** GLOBALS *****/
 //init.cpp
 extern int SQ120[BOARD_SIZE];
@@ -103,6 +117,20 @@ struct board{
   undo history[MAX_GAME_MOVES]; //indexed by ply
   int pieceList[13][10]; //13 total pieces, 10 possible of each piece
 };
+
+struct move{
+  int move;
+  int score;
+}
+/* Use bitwise operations
+0000 0000 0000 0000 0000 0111 1111 -> From (7 bits) 0x7F
+0000 0000 0000 0011 1111 1000 0000 -> To (7 bits) >> 7, 0x7F
+0000 0000 0011 1100 0000 0000 0000 -> What piece captured? (4 bits) >>14, 0x7F
+0000 0000 0100 0000 0000 0000 0000 -> enPassent? (1 bit) 0x40000
+0000 0000 1000 0000 0000 0000 0000 -> Pawn Start (1 bit) 0x80000
+0000 1111 0000 0000 0000 0000 0000 -> Promoted Piece (4 bits) >> 20, 0x7F
+0001 0000 0000 0000 0000 0000 0000 -> Castled? (1 bit) 0x1000000
+*/
 
 /***** FUNCTIONS *****/
 extern void printBitBoard(U64 bitBoard);
