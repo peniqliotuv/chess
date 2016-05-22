@@ -1,8 +1,23 @@
 #ifndef ENUMERATIONS
 #define ENUMERATIONS
 #include <cstdlib>
+#include <exception>
 
+/***** TYPE DEFINITIONS *****/
 typedef unsigned long long U64; //for bitboards
+
+/***** EXCEPTIONS *****/
+class castlePermBounds : public std::exception{
+  virtual const char* what() const throw(){
+    return "Castle Permission is out of bounds";
+  }
+};
+
+class pieceListException : public std::exception{
+  virtual const char* what() const throw(){
+    return "Piece lists do not match the board.";
+  }
+};
 
 /***** MACROS *****/
 #define BOARD_SIZE 120
@@ -92,5 +107,8 @@ extern void resetBoard();
 extern int parseFen(char* fen, board& b);
 extern void printBoard(const board& b);
 extern void updateMateriaList(board& b);
+extern int checkBoard(const board& b);
+extern int countBits(U64 b);
+extern int popBit(U64 *bb);
 
 #endif

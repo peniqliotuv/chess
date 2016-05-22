@@ -1,14 +1,6 @@
 #include <cstdlib>
 #include "enums.h"
 #include <iostream>
-#include <exception>
-
-//Exceptions
-class castlePermBounds : public std::exception{
-  virtual const char* what() const throw(){
-    return "Castle Permission is out of bounds";
-  }
-};
 
 //Data Members:
 char pieceChar[] = ".PNBRQKpnbrqk";
@@ -56,13 +48,103 @@ void updateMateriaList(board& b){
       if (isMajor[piece]) b.numMajorPieces[color]++;
 
       b.materialValue[color] += pieceValue[color];
-
       b.pieceList[piece][b.numPieces[piece]] = sq;
       b.numPieces[piece]++;
+
       if (piece == wK) b.kingSquare[color] = sq;
       else if (piece == bK) b.kingSquare[color] = sq;
+
+      if (piece == wP){
+        setBit(b.pawns[WHITE], SQ120[sq]);
+        setBit(b.pawns[BOTH], SQ120[sq]);
+      }
+      else if (piece == bP){
+        setBit(b.pawns[BLACK], SQ120[sq]);
+        setBit(b.pawns[BOTH], SQ120[sq]);
+      }
     }
   }
+}
+
+int checkBoard(const board& b){
+  int temp_numPieces[13] = {0,0,0,0,0,0,0,0,0,0,0,0,0};
+  int temp_numMinorPieces[2] = {0,0};
+  int temp_numMajorPieces[2] = {0,0};
+  int temp_numBigPieces[2] = {0,0};
+  int temp_materialValue[2] = {0,0};
+
+  U64 temp_pawns[3] = {0ULL, 0ULL, 0ULL};
+
+  temp_pawns[WHITE] = b.pawns[WHITE];
+  temp_pawns[BLACK] = b.pawns[BLACK];
+  temp_pawns[BOTH] = b.pawns[BOTH];
+
+  int sq120, color, pcount, tempPiece;
+
+  for (int i = wP; i <= bK; i++){
+    for (int j = 0; j < b.numPieces[i]; j++){
+      sq120 = b.pieceList[i][j];
+      if (b.pieces[sq120] != i) throw pieceListException();
+    }
+  }
+
+  for (int i = 0; i < 64; i++){
+    sq120 = SQ64[i];
+    tempPiece = b.pieces[sq120];
+    temp_numPieces[tempPiece]++;
+    color = pieceColor[tempPiece];
+    if (isBig[tempPiece]) temp_numBigPieces[color]++;
+    if (isMinor[tempPiece]) temp_numMinorPieces[color]++;
+    if (isMajor[tempPiece]) temp_numMajorPieces[color]++;
+
+    temp_materialValue[color] += pieceValue[color];
+  }
+
+  for (int i = wP; i<= bK; i++){
+    if (temp_numPieces[i] != b.numPieces[i]){
+      throw pieceListException();
+    }
+  }
+
+  pcount = countBits(temp_pawns[WHITE]);
+  if (pcount != b.numPieces[wP]) throw pieceListException();
+  pcount = countBits(temp_pawns[BLACK]);
+  if (pcount != b.numPieces[bP]) throw pieceListException();
+  pcount = countBits(temp_pawns[BOTH]);
+  if (pcount != (b.numPieces[wP] + b.numPieces[bP])) throw pieceListException();
+
+  while (temp_pawns[WHITE]){
+    int sq = popBit(&temp_pawns[WHITE]);
+    if (b.pieces[SQ64[sq]] != wP) throw pieceListException();
+  }
+  while (temp_pawns[BLACK]){
+    int sq = popBit(&temp_pawns[BLACK]);
+    if (b.pieces[SQ64[sq]] != bP) throw pieceListException();
+  }
+  while (temp_pawns[BOTH]){
+    int sq = popBit(&temp_pawns[BOTH]);
+    if (b.pieces[SQ64[sq]] != bP && b.pieces[SQ64[sq]] != wP){
+      throw pieceListException();
+    }
+
+  }
+
+  if (temp_materialValue[WHITE] != b.materialValue[WHITE] || temp_materialValue[BLACK] != b.materialValue[BLACK]){
+    throw pieceListException();
+  }
+  if (temp_numMajorPieces[WHITE] != b.numMajorPieces[WHITE] || temp_numMajorPieces[BLACK] != b.numMajorPieces[BLACK]){
+    throw pieceListException();
+  }
+  if (temp_numMinorPieces[WHITE] != b.numMinorPieces[WHITE] || temp_numMinorPieces[BLACK] != b.numMinorPieces[BLACK]){
+    throw pieceListException();
+}
+  if (temp_numBigPieces[WHITE] != b.numBigPieces[WHITE] && temp_numBigPieces[BLACK] != b.numBigPieces[BLACK]){
+    throw pieceListException();
+}
+  if (generatePosKey(b) != b.posKey){
+    throw pieceListException();
+  }
+  return 1;
 }
 
 int parseFen(char* fen, board& b){
@@ -157,6 +239,7 @@ int parseFen(char* fen, board& b){
     b.enPassent = toSquareNumber(file, row);
   }
   b.posKey = generatePosKey(b);
+  updateMateriaList(b);
   return 0;
 }
 

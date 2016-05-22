@@ -35,9 +35,8 @@ void printBitBoard(U64 bitBoard){
   std::cout << std::endl;
   for (row = ROW_8; row >= ROW_1; row--){
     for (file = FILE_A; file <= FILE_H; file++){
-      sq120 = toSquareNumber(row, file); //120-Based
+      sq120 = toSquareNumber(file, row); //120-Based
       sq64 = SQ120[sq120]; //64-Based
-
       if ((bit << sq64) & bitBoard){
         //Something exists there, print it.
         std::cout << "X";
