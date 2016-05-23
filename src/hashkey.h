@@ -1,7 +1,9 @@
+//hashkey.h
 #ifndef HASHKEY
 #define HASHKEY
 
 #include "enums.h"
+#include "board.h"
 
 //Generates a unique position key for a board
 //which is useful for backtracking positions

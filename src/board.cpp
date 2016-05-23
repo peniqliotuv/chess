@@ -1,6 +1,8 @@
 //board.cpp
 #include <cstdlib>
-#include "enums.h"
+#include "board.h"
+#include "hashkey.h"
+#include "bitboard.h"
 #include <iostream>
 
 //Data Members:

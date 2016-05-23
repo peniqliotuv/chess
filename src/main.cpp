@@ -2,6 +2,9 @@
 #include <iostream>
 #include "enums.h"
 #include "bitboard.h"
+#include "board.h"
+#include "undo.h"
+#include "init.h"
 #include "threats.h"
 
 #define FEN_1 "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1"

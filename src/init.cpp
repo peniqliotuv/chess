@@ -1,4 +1,6 @@
-#include "enums.h"
+//init.cpp
+#include "init.h"
+
 //Macros
 #define RAND_64 (	(U64)rand() | \
 					(U64)rand() << 15 | \
@@ -46,12 +48,10 @@ void initBitMasks(){
     setMask[i] = 0ULL;
     clearMask[i] = 0ULL;
   }
-
   for (int i = 0; i < 64; i++){
     setMask[i] |= (1ULL << i);
     clearMask[i] = ~setMask[i];
   }
-
 }
 
 void initHashKeys(){
@@ -71,12 +71,12 @@ void initFileRow(){
 	int row = ROW_1;
 	int sq = A1;
 	int sq64 = 0;
-	for (int i=0; i<BOARD_SIZE; i++){
+	for (int i=0; i<BOARD_SIZE; ++i){
 		fileArray[i] = OFFBOARD;
 		rowArray[i] = OFFBOARD;
 	}
-	for (row = ROW_1; row <= ROW_8; row++){
-		for (file = FILE_A; file <= FILE_H; file++){
+	for (row = ROW_1; row <= ROW_8; ++row){
+		for (file = FILE_A; file <= FILE_H; ++file){
 			sq = toSquareNumber(file, row);
 			fileArray[sq] = file;
 			rowArray[sq] = row;

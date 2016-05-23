@@ -89,60 +89,17 @@ enum {
   A8 = 91, B8, C8, D8, E8, F8, G8, H8, NO_SQUARE, OFFBOARD
 };
 
-/***** STRUCTS *****/
-struct undo{
-  int move;
-  int castlePermission;
-  int enPassent;
-  int fiftyMoves;
-  U64 posKey;
-};
 
-struct board{
-  int pieces[BOARD_SIZE];
-  U64 pawns[3];
-  int kingSquare[2];
-  int side;
-  int enPassent;
-  int fiftyMoves;
-  int ply;
-  int plyHistory;
-  U64 posKey;
-  int numPieces[13]; //How many exist at this index in the board
-  int numMajorPieces[2];
-  int numMinorPieces[2];
-  int numBigPieces[2];
-  int materialValue[2]; //Total material value of each player
-  int castlePermission; //WKCA, WQCA, BKCA, BQCA
-
-  undo history[MAX_GAME_MOVES]; //indexed by ply
-  int pieceList[13][10]; //13 total pieces, 10 possible of each piece
-};
-
-struct move{
-  int move;
-  int score;
-};
-/* Use bitwise operations
-0000 0000 0000 0000 0000 0111 1111 -> From (7 bits) 0x7F
-0000 0000 0000 0011 1111 1000 0000 -> To (7 bits) >> 7, 0x7F
-0000 0000 0011 1100 0000 0000 0000 -> What piece captured? (4 bits) >>14, 0x7F
-0000 0000 0100 0000 0000 0000 0000 -> enPassent? (1 bit) 0x40000
-0000 0000 1000 0000 0000 0000 0000 -> Pawn Start (1 bit) 0x80000
-0000 1111 0000 0000 0000 0000 0000 -> Promoted Piece (4 bits) >> 20, 0x7F
-0001 0000 0000 0000 0000 0000 0000 -> Castled? (1 bit) 0x1000000
-*/
 
 /***** FUNCTIONS *****/
-extern void printBitBoard(U64 bitBoard);
-extern void initialize();
-extern U64 generatePosKey(const board& b);
-extern void resetBoard();
-extern int parseFen(char* fen, board& b);
-extern void printBoard(const board& b);
-extern void updateMateriaList(board& b);
-extern int checkBoard(const board& b);
-extern int countBits(U64 b);
-extern int popBit(U64 *bb);
+//extern void printBitBoard(U64 bitBoard);
+//extern void initialize();
+//extern U64 generatePosKey(const board& b);
+//extern void resetBoard();
+//extern void printBoard(const board& b);
+//extern void updateMateriaList(board& b);
+//extern int checkBoard(const board& b);
+//extern int countBits(U64 b);
+//extern int popBit(U64 *bb);
 
 #endif

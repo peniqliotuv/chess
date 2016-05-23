@@ -1,5 +1,6 @@
 //threats.cpp
 #include "enums.h"
+#include "board.h"
 #include "threats.h"
 
 const int knightMove[8] = {-8, -19, -21, -12, 8, 19, 21, 12};
