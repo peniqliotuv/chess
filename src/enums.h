@@ -1,3 +1,4 @@
+//enums.h
 #ifndef ENUMERATIONS
 #define ENUMERATIONS
 #include <cstdlib>
@@ -32,12 +33,12 @@ class pieceListException : public std::exception{
 #define CAPTURED(m) ( ( (m) >> 14) & 0xF); //what piece was captured
 #define PROMOTED(m) ( ( (m) >> 20) & 0xF);
 
-#define EPFLAG(m) 0x40000
-#define PAWNFLAG(m) 0x80000
-#define CASTLEFLAG(m) 0x1000000
+#define EPFLAG 0x40000
+#define PAWNFLAG 0x80000
+#define CASTLEFLAG 0x1000000
 
-#define ISCAPTURE(m) 0x7C000 //is it a capturing move?
-#define ISPROMOTION(m) 0xF00000 //is it a promoting move?
+#define ISCAPTURE 0x7C000 //is it a capturing move?
+#define ISPROMOTION 0xF00000 //is it a promoting move?
 
 
 
@@ -70,7 +71,7 @@ extern const int bishopMove[4];
 extern const int kingMove[8];
 
 /***** ENUMERATIONS *****/
-enum {EMPTY, wP, wN, wB, wR, wQ, wK, bP, bN, bB, bR, bQ, bK}; // already enumerated incrementally
+enum {EMPTY, wP, wN, wB, wR, wQ, wK, bP, bN, bB, bR, bQ, bK};
 enum {FILE_A, FILE_B, FILE_C, FILE_D, FILE_E, FILE_F, FILE_G, FILE_H, FILE_NONE};
 enum {ROW_1, ROW_2, ROW_3, ROW_4, ROW_5, ROW_6, ROW_7, ROW_8, ROW_NONE};
 enum {WHITE, BLACK, BOTH};
@@ -121,7 +122,7 @@ struct board{
 struct move{
   int move;
   int score;
-}
+};
 /* Use bitwise operations
 0000 0000 0000 0000 0000 0111 1111 -> From (7 bits) 0x7F
 0000 0000 0000 0011 1111 1000 0000 -> To (7 bits) >> 7, 0x7F

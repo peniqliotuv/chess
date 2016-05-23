@@ -1,4 +1,5 @@
-#include "enums.h"
+//hashkey.cpp
+#include "hashkey.h"
 #include <cstdlib>
 
 U64 generatePosKey(const board& b){
