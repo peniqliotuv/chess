@@ -70,7 +70,7 @@ void initFileRow(){
 	int file = FILE_A;
 	int row = ROW_1;
 	int sq = A1;
-	int sq64 = 0;
+	//int sq64 = 0;
 	for (int i=0; i<BOARD_SIZE; ++i){
 		fileArray[i] = OFFBOARD;
 		rowArray[i] = OFFBOARD;

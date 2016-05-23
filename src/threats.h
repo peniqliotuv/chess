@@ -3,6 +3,7 @@
 #define THREATS
 
 #include "enums.h"
+#include "board.h"
 
 bool isKnight(int p);
 bool isRookQueen(int p);

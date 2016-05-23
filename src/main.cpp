@@ -5,8 +5,10 @@
 #include "board.h"
 #include "undo.h"
 #include "init.h"
+#include "io.h"
 #include "threats.h"
 
+//FOR TESTING PURPOSES
 #define FEN_1 "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1"
 #define FEN_2 "rnbqkbnr/pp1ppppp/8/2p5/4P3/8/PPPP1PPP/RNBQKBNR w KQkq c6 0 2"
 #define FEN_3 "rnbqkbnr/pp1ppppp/8/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2"
@@ -14,35 +16,28 @@
 #define FEN_5 "8/3q1p2/8/5P2/4Q3/8/8/8 w - - 0 2 "
 
 using namespace std;
-void PrintBin(int move) {
 
-	int index = 0;
-	printf("As binary:\n");
-	for(index = 27; index >= 0; index--) {
-		if( (1<<index) & move) printf("1");
-		else printf("0");
-		if(index!=28 && index%4==0) printf(" ");
-	}
-	printf("\n");
-}
 
 int main(){
   initialize();
-  board* b = new board;
-  parseFen(FEN_5, *b);
-  printBoard(*b);
+  //board* b = new board;
 
   int move = 0;
-	int from = 6; int to = 12;
-	int cap = wR; int prom = bR;
+	int from = A2; int to = H7;
+	int cap = wR; int prom = bQ;
 
 	move = ( ( from ) | ( to << 7 ) | ( cap << 14 ) | ( prom << 20) );
 
 	printf("\ndec:%d hex:%X\n",move,move);
-	PrintBin(move);
+
   cout << "From: " << FROMSQ(move);
   cout << endl << "To: " << TOSQ(move);
   cout << endl <<  "Captured: " << CAPTURED(move);
   cout << endl <<  "Promoted:" << PROMOTED(move);
+	cout << endl;
+	cout << "from: " << printSquare(from) << endl;
+	cout << "to: " << printSquare(to) << endl;
+	cout << "move: " << printMove(move) << endl;
+
   return 0;
 }
