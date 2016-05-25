@@ -19,10 +19,13 @@ void resetBoard(board &b){
   for (int i=0; i<64; ++i){
     b.pieces[SQ64[i]] = EMPTY;
   }
-  for (int i=0; i<3; ++i){
+  for (int i=0; i<2; ++i){
     b.numMajorPieces[i] = 0;
     b.numMinorPieces[i] = 0;
     b.numBigPieces[i] = 0;
+    b.materialValue[i] = 0;
+  }
+  for (int i=0; i<3; ++i){
     b.pawns[i] = 0ULL;
   }
   for (int i=0; i<13; ++i){

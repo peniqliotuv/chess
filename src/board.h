@@ -28,6 +28,7 @@ struct board{
 
 void resetBoard(board &b);
 void updateMateriaList(board &b);
+//Checks if board is valid
 int checkBoard(const board& b);
 int parseFen(char* fen, board& b);
 void printBoard(const board& b);

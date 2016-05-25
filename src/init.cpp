@@ -1,14 +1,14 @@
 //init.cpp
 #include "init.h"
 
-//Macros
+/***** MACROS *****/
 #define RAND_64 (	(U64)rand() | \
 					(U64)rand() << 15 | \
 					(U64)rand() << 30 | \
 					(U64)rand() << 45 | \
 					((U64)rand() & 0xf) << 60    )
 
-//Data Members:
+/***** DATA MEMBERS *****/
 int fileArray[BOARD_SIZE];
 int rowArray[BOARD_SIZE];
 int SQ120[BOARD_SIZE];

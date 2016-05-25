@@ -2,7 +2,6 @@
 #include "io.h"
 #include "enums.h"
 #include "threats.h"
-#include <iostream>
 
 std::string rowStrings[8] = {"1", "2", "3", "4", "5", "6", "7", "8"};
 std::string fileStrings[8] = {"a", "b", "c", "d", "e", "f", "g", "h"};
