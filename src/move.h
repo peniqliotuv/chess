@@ -3,11 +3,15 @@
 #define MOVE
 
 #include "enums.h"
-
-struct move{
+class move{
+private:
   int move;
   int score;
+public:
+  void setMove(int m);
+  void setScore(int s);
 };
+
 /* Use bitwise operations
 0000 0000 0000 0000 0000 0111 1111 -> From (7 bits) 0x7F
 0000 0000 0000 0011 1111 1000 0000 -> To (7 bits) >> 7, 0x7F
