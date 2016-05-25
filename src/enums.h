@@ -41,8 +41,6 @@ class pieceListException : public std::exception{
 #define ISCAPTURE 0x7C000 //is it a capturing move?
 #define ISPROMOTION 0xF00000 //is it a promoting move?
 
-
-
 /***** GLOBALS *****/
 //init.cpp
 extern int SQ120[BOARD_SIZE];
@@ -89,8 +87,6 @@ enum {
   A7 = 81, B7, C7, D7, E7, F7, G7, H7,
   A8 = 91, B8, C8, D8, E8, F8, G8, H8, NO_SQUARE, OFFBOARD
 };
-
-
 
 /***** FUNCTIONS *****/
 //extern void printBitBoard(U64 bitBoard);

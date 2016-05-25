@@ -2,6 +2,9 @@
 #include "enums.h"
 #include "board.h"
 #include "threats.h"
+#include "validate.h"
+
+#include <iostream>
 
 const int knightMove[8] = {-8, -19, -21, -12, 8, 19, 21, 12};
 const int rookMove[4] = {-1, -10, 1, 10};
@@ -30,6 +33,14 @@ bool isKing(int p){
 
 bool sqAttacked(const int sq, const int side, const board& b){
   int tempPiece, tempSq, dir;
+
+  if (!SqOnBoard(sq)){
+    std::cout << "Square is not on board!" << std::endl;
+  }
+  if (!SideValid(side)){
+    std::cout << "Side is not valid!" << std::endl;
+  }
+
   //Pawns
   if (side == WHITE){
     if (b.pieces[sq-11] == wP || b.pieces[sq-9] == wP) return true;
