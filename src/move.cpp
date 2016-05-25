@@ -8,3 +8,11 @@ void move::setMove(int m){
 void move::setScore(int s){
   this->score = s;
 }
+
+int move::getScore(){
+  return this->score;
+}
+
+int move::getMove(){
+  return this->move;
+}

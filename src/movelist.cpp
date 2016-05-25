@@ -13,6 +13,14 @@ void moveList::ml_setScore(int count, int score){
   moves[count].setScore(score);
 }
 
+int moveList::ml_getMove(int count){
+  return moves[count].getMove();
+}
+
+int moveList::ml_getScore(int count){
+  return moves[count].getScore();
+}
+
 void moveList::incrementCount(){
   (this->count)++;
 }

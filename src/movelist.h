@@ -15,6 +15,8 @@ public:
   int getCount();
   void ml_setMove(int count, int move);
   void ml_setScore(int count, int score);
+  int ml_getMove(int count);
+  int ml_getScore(int count);
   void incrementCount();
   void setCount(int cnt);
 };

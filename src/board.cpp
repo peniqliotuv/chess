@@ -143,10 +143,10 @@ int checkBoard(const board& b){
   }
   if (temp_numMinorPieces[WHITE] != b.numMinorPieces[WHITE] || temp_numMinorPieces[BLACK] != b.numMinorPieces[BLACK]){
     throw pieceListException();
-}
+  }
   if (temp_numBigPieces[WHITE] != b.numBigPieces[WHITE] && temp_numBigPieces[BLACK] != b.numBigPieces[BLACK]){
     throw pieceListException();
-}
+  } 
   if (generatePosKey(b) != b.posKey){
     throw pieceListException();
   }

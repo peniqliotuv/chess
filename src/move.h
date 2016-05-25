@@ -1,6 +1,6 @@
 //move.h
-#ifndef MOVE
-#define MOVE
+#ifndef MOVE_OBJECT
+#define MOVE_OBJECT
 
 #include "enums.h"
 class move{
@@ -10,6 +10,8 @@ private:
 public:
   void setMove(int m);
   void setScore(int s);
+  int getMove();
+  int getScore();
 };
 
 /* Use bitwise operations
