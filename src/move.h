@@ -14,7 +14,7 @@ public:
   int getScore();
 };
 
-/* Use bitwise operations
+/* Bitwise Operations
 0000 0000 0000 0000 0000 0111 1111 -> From (7 bits) 0x7F
 0000 0000 0000 0011 1111 1000 0000 -> To (7 bits) >> 7, 0x7F
 0000 0000 0011 1100 0000 0000 0000 -> What piece captured? (4 bits) >>14, 0x7F

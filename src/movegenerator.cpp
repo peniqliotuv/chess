@@ -1,5 +1,6 @@
 //movegenerator.cpp
 #include <iostream>
+#include "threats.h"
 #include "movegenerator.h"
 
 /***** MACROS *****/
@@ -131,7 +132,22 @@ void generateAllMoves(const board& b, moveList* list){
         addCaptureMove(b, MOVE(sq, (sq+11), EMPTY, EMPTY, EPFLAG), list);
       }
     }
+    if (b.castlePermission & whiteKingCastle){
+      if (b.pieces[G1] == EMPTY && b.pieces[F1] == EMPTY){
+        if (!sqAttacked(F1, BLACK, b) && !sqAttacked(E1, BLACK, b)){
+          std::cout << "White King Castle" << std::endl;
+        }
+      }
+    }
+    if (b.castlePermission & whiteQueenCastle){
+      if (b.pieces[B1] == EMPTY && b.pieces[C1] == EMPTY && b.pieces[D1] == EMPTY){
+        if (!sqAttacked(D1, BLACK, b) && !sqAttacked(E1, BLACK, b)){
+          std::cout << "White Queen Castle" << std::endl;
+        }
+      }
+    }
   }
+
   else if (b.side == BLACK){
     for (int i=0; i<b.numPieces[bP]; ++i){
       sq = b.pieceList[bP][i];
@@ -155,6 +171,20 @@ void generateAllMoves(const board& b, moveList* list){
       }
       if ((sq-11) == b.enPassent){
         addCaptureMove(b, MOVE(sq, (sq-11), EMPTY, EMPTY, EPFLAG), list);
+      }
+    }
+    if (b.castlePermission & blackKingCastle){
+      if (b.pieces[G8] == EMPTY && b.pieces[F8] == EMPTY){
+        if (!sqAttacked(E8, WHITE, b) && !sqAttacked(F8, WHITE, b)){
+          std::cout << "Black King Castle" << std::endl;
+        }
+      }
+    }
+    if (b.castlePermission & blackQueenCastle){
+      if (b.pieces[B8] == EMPTY && b.pieces[C8] == EMPTY && b.pieces[D8] == EMPTY){
+        if (!sqAttacked(D8, WHITE, b) && !sqAttacked(E8, WHITE, b)){
+          std::cout << "Black Queen Castle" << std::endl;
+        }
       }
     }
   }
@@ -204,9 +234,9 @@ void generateAllMoves(const board& b, moveList* list){
       for (int j=0; j<numDir[piece]; ++j){
         dir = pieceDir[piece][j];
         targetSq = sq + dir;
-        if (SQOFFBOARD(targetSq)) continue;
-
-        // BLACK ^ 1 == WHITE, WHITE ^ 1 == BLACK
+        if (SQOFFBOARD(targetSq)) {
+          continue;
+        }
         if (b.pieces[targetSq] != EMPTY){
           if (pieceColor[b.pieces[targetSq]] == (b.side ^ 1)){
             //Capture move

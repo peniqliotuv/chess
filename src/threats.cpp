@@ -46,7 +46,7 @@ bool sqAttacked(const int sq, const int side, const board& b){
     if (b.pieces[sq-11] == wP || b.pieces[sq-9] == wP) return true;
   }
   else {
-    if (b.pieces[sq-11] == bP || b.pieces[sq-9] == bP) return true;
+    if (b.pieces[sq+11] == bP || b.pieces[sq+9] == bP) return true;
   }
   //Knights
   for (int i=0; i<8; ++i){
