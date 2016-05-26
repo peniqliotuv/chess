@@ -135,14 +135,14 @@ void generateAllMoves(const board& b, moveList* list){
     if (b.castlePermission & whiteKingCastle){
       if (b.pieces[G1] == EMPTY && b.pieces[F1] == EMPTY){
         if (!sqAttacked(F1, BLACK, b) && !sqAttacked(E1, BLACK, b)){
-          std::cout << "White King Castle" << std::endl;
+          addQuietMove(b, MOVE(E1, G1, EMPTY, EMPTY, CASTLEFLAG), list);
         }
       }
     }
     if (b.castlePermission & whiteQueenCastle){
       if (b.pieces[B1] == EMPTY && b.pieces[C1] == EMPTY && b.pieces[D1] == EMPTY){
         if (!sqAttacked(D1, BLACK, b) && !sqAttacked(E1, BLACK, b)){
-          std::cout << "White Queen Castle" << std::endl;
+          addQuietMove(b, MOVE(E1, C1, EMPTY, EMPTY, CASTLEFLAG), list);
         }
       }
     }
@@ -176,14 +176,14 @@ void generateAllMoves(const board& b, moveList* list){
     if (b.castlePermission & blackKingCastle){
       if (b.pieces[G8] == EMPTY && b.pieces[F8] == EMPTY){
         if (!sqAttacked(E8, WHITE, b) && !sqAttacked(F8, WHITE, b)){
-          std::cout << "Black King Castle" << std::endl;
+          addQuietMove(b, MOVE(E8, G8, EMPTY, EMPTY, CASTLEFLAG), list);
         }
       }
     }
     if (b.castlePermission & blackQueenCastle){
       if (b.pieces[B8] == EMPTY && b.pieces[C8] == EMPTY && b.pieces[D8] == EMPTY){
         if (!sqAttacked(D8, WHITE, b) && !sqAttacked(E8, WHITE, b)){
-          std::cout << "Black Queen Castle" << std::endl;
+          addQuietMove(b, MOVE(E8, C8, EMPTY, EMPTY, CASTLEFLAG), list);
         }
       }
     }
@@ -193,13 +193,11 @@ void generateAllMoves(const board& b, moveList* list){
   pieceIndex = slidingPieceSide[b.side];
   piece = slidingPieceArray[pieceIndex++];
   while (piece != 0){
-    std::cout << "sliding index: " << pieceIndex << " piece: " << piece << std::endl;
     for (int i=0; i<b.numPieces[piece]; ++i){
       sq = b.pieceList[piece][i];
       if (!SqOnBoard(sq)){
         std::cout << "ERROR: SQUARE NOT ON BOARD" << std::endl;
       }
-      std::cout << "Piece: " << pieceChar[piece] << " on square: " << printSquare(sq) << std::endl;
       for (int j=0; j<numDir[piece]; ++j){
         dir = pieceDir[piece][j];
         targetSq = sq + dir;
@@ -207,12 +205,11 @@ void generateAllMoves(const board& b, moveList* list){
         // BLACK ^ 1 == WHITE, WHITE ^ 1 == BLACK
           if (b.pieces[targetSq] != EMPTY){
             if (pieceColor[b.pieces[targetSq]] == (b.side ^ 1)){
-              //Capture move
-              std::cout << "\tCapture on square: " << printSquare(targetSq) << std::endl;
+              addCaptureMove(b, MOVE(sq, targetSq, b.pieces[targetSq], EMPTY, 0), list);
             }
             break;
           }
-          std::cout << "\tNon-capture on square: " << printSquare(targetSq) << std::endl;
+          addQuietMove(b, MOVE(sq, targetSq, EMPTY, EMPTY, 0), list);
           targetSq += dir;
         }
       }
@@ -224,13 +221,11 @@ void generateAllMoves(const board& b, moveList* list){
   pieceIndex = nonSlidingPieceSide[b.side];
   piece = nonSlidingPieceArray[pieceIndex++];
   while (piece != 0){
-    std::cout << "non-sliding index: " << pieceIndex << " piece: " << piece << std::endl;
     for (int i=0; i<b.numPieces[piece]; ++i){
       sq = b.pieceList[piece][i];
       if (!SqOnBoard(sq)){
         std::cout << "ERROR: SQUARE NOT ON BOARD" << std::endl;
       }
-      std::cout << "Piece: " << pieceChar[piece] << " on square: " << printSquare(sq) << std::endl;
       for (int j=0; j<numDir[piece]; ++j){
         dir = pieceDir[piece][j];
         targetSq = sq + dir;
@@ -239,12 +234,11 @@ void generateAllMoves(const board& b, moveList* list){
         }
         if (b.pieces[targetSq] != EMPTY){
           if (pieceColor[b.pieces[targetSq]] == (b.side ^ 1)){
-            //Capture move
-            std::cout << "\tCapture on square: " << printSquare(targetSq) << std::endl;
+            addCaptureMove(b, MOVE(sq, targetSq, b.pieces[targetSq], EMPTY, 0), list);
           }
           continue;
         }
-        std::cout << "\tNon-capture on square: " << printSquare(targetSq) << std::endl;
+        addQuietMove(b, MOVE(sq, targetSq, EMPTY, EMPTY, 0), list);
       }
     }
     piece = nonSlidingPieceArray[pieceIndex++];
