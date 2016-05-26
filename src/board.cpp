@@ -1,9 +1,9 @@
 //board.cpp
 #include <cstdlib>
+#include <iostream>
 #include "board.h"
 #include "hashkey.h"
 #include "bitboard.h"
-#include <iostream>
 
 //Data Members:
 char pieceChar[] = ".PNBRQKpnbrqk";

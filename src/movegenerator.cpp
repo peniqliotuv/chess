@@ -11,6 +11,23 @@ int slidingPieceArray[8] = {wB, wR, wQ, 0, bB, bR, bQ, 0};
 int slidingPieceSide[2] = {0, 4}; //used to index the sliding piece array
 int nonSlidingPieceArray[6] = {wN, wK, 0, bN, bK, 0};
 int nonSlidingPieceSide[2] = {0, 3}; // used to index the non sliding piece array
+int pieceDir[13][8] = { //First index: piece | Second index: directions
+	{ 0, 0, 0, 0, 0, 0, 0 },
+	{ 0, 0, 0, 0, 0, 0, 0 },
+	{ -8, -19,	-21, -12, 8, 19, 21, 12 },
+	{ -9, -11, 11, 9, 0, 0, 0, 0 },
+	{ -1, -10,	1, 10, 0, 0, 0, 0 },
+	{ -1, -10,	1, 10, -9, -11, 11, 9 },
+	{ -1, -10,	1, 10, -9, -11, 11, 9 },
+	{ 0, 0, 0, 0, 0, 0, 0 },
+	{ -8, -19,	-21, -12, 8, 19, 21, 12 },
+	{ -9, -11, 11, 9, 0, 0, 0, 0 },
+	{ -1, -10,	1, 10, 0, 0, 0, 0 },
+	{ -1, -10,	1, 10, -9, -11, 11, 9 },
+	{ -1, -10,	1, 10, -9, -11, 11, 9 }
+};
+//How far to loop through for each piece in pieceDir
+int numDir[13] = {0, 0, 8, 4, 4, 8, 8, 0, 8, 4, 4, 8, 8};
 
 void addQuietMove(const board& b, int move, moveList* list){
   list->ml_setMove(list->getCount(), move);
@@ -84,7 +101,7 @@ void generateAllMoves(const board& b, moveList* list){
     std::cout << "Error: board is incorrect" << std::endl;
   }
 
-  int sq;
+  int sq, targetSq;
   int dir = 0;
   int pieceIndex = 0;
   int piece = EMPTY;
@@ -141,18 +158,43 @@ void generateAllMoves(const board& b, moveList* list){
       }
     }
   }
+
   //Sliding piece
   pieceIndex = slidingPieceSide[b.side];
   piece = slidingPieceArray[pieceIndex++];
   while (piece != 0){
-    std::cout << "sliding piece index: " << pieceIndex << "piece: " << piece << std::endl;
+    std::cout << "sliding index: " << pieceIndex << " piece: " << piece << std::endl;
     piece = slidingPieceArray[pieceIndex++];
   }
+
   //Non-sliding piece
   pieceIndex = nonSlidingPieceSide[b.side];
   piece = nonSlidingPieceArray[pieceIndex++];
   while (piece != 0){
-    std::cout << "non-sliding piece index: " << pieceIndex << "piece: " << piece << std::endl;
+    std::cout << "non-sliding index: " << pieceIndex << " piece: " << piece << std::endl;
+    for (int i=0; i<b.numPieces[piece]; ++i){
+      sq = b.pieceList[piece][i];
+      if (!SqOnBoard(sq)){
+        std::cout << "ERROR: SQUARE NOT ON BOARD" << std::endl;
+      }
+      std::cout << "Piece: " << pieceChar[piece] << " on square: " << printSquare(sq) << std::endl;
+      for (int j=0; j<numDir[piece]; ++j){
+        dir = pieceDir[piece][j];
+        targetSq = sq + dir;
+        if (SQOFFBOARD(targetSq)) continue;
+
+        // BLACK ^ 1 == WHITE, WHITE ^ 1 == BLACK
+        if (b.pieces[targetSq] != EMPTY){
+          if (pieceColor[b.pieces[targetSq]] == (b.side ^ 1)){
+            //Capture move
+            std::cout << "\tCapture on square: " << printSquare(targetSq) << std::endl;
+          }
+          continue;
+        }
+        std::cout << "\tNon-capture on square: " << printSquare(targetSq) << std::endl;
+      }
+    }
+
     piece = nonSlidingPieceArray[pieceIndex++];
   }
 }

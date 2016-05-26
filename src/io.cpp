@@ -47,7 +47,7 @@ std::string printMove(const int move){
 }
 
 void printMoveList(moveList& move){
-  std::cout << "Movelist: " << std::endl;
+  std::cout <<std::endl << "******** MOVELIST ******** " << std::endl;
   for (int i=0; i<move.getCount(); ++i){
     std::cout << "Move " << i+1 << " :" << printMove(move.ml_getMove(i)) <<
     " Score: " << std::dec << move.ml_getScore(i) << std::endl;

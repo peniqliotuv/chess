@@ -74,6 +74,8 @@ extern int slidingPieceArray[8];
 extern int slidingPieceSide[2];
 extern int nonSlidingPieceArray[6];
 extern int nonSlidingPieceSide[2];
+extern int pieceDir[13][8];
+extern int numDir[13];
 
 /***** ENUMERATIONS *****/
 enum {EMPTY, wP, wN, wB, wR, wQ, wK, bP, bN, bB, bR, bQ, bK};
@@ -93,16 +95,5 @@ enum {
   A7 = 81, B7, C7, D7, E7, F7, G7, H7,
   A8 = 91, B8, C8, D8, E8, F8, G8, H8, NO_SQUARE, OFFBOARD
 };
-
-/***** FUNCTIONS *****/
-//extern void printBitBoard(U64 bitBoard);
-//extern void initialize();
-//extern U64 generatePosKey(const board& b);
-//extern void resetBoard();
-//extern void printBoard(const board& b);
-//extern void updateMateriaList(board& b);
-//extern int checkBoard(const board& b);
-//extern int countBits(U64 b);
-//extern int popBit(U64 *bb);
 
 #endif

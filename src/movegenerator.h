@@ -6,6 +6,7 @@
 #include "board.h"
 #include "movelist.h"
 #include "validate.h"
+#include "io.h"
 
 //No Captures
 void addQuietMove(const board& b, int move, moveList* list);

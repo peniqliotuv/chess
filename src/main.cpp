@@ -17,13 +17,14 @@
 #define FEN_5 "8/3q1p2/8/5P2/4Q3/8/8/8 w - - 0 2 "
 #define PAWN_TEST "rnbqkb1r/pp1p1pPp/8/2p1pP2/1P1P4/3P3P/P1P1P3/RNBQKBNR w KQkq e6 0 1"
 #define PAWN_TEST2 "rnbqkbnr/p1p1p3/3p3p/1p1p4/2P1Pp2/8/PP1P1PpP/RNBQKB1R b KQkq e3 0 1"
+#define KNIGHTSKINGS "5k2/1n6/4n3/6N1/8/3N4/8/5K2 w - - 0 1"
 
 using namespace std;
 
 int main(){
   initialize();
   board* b = new board;
-	parseFen(PAWN_TEST2, *b);
+	parseFen(KNIGHTSKINGS, *b);
 	printBoard(*b);
 	moveList* list = new moveList;
 	generateAllMoves(*b, list);
