@@ -1,9 +1,16 @@
 //movegenerator.cpp
 #include <iostream>
 #include "movegenerator.h"
+
 /***** MACROS *****/
 #define MOVE(f,t,ca,pro,fl) ( (f) | ((t) << 7) | ( (ca) << 14 ) | ( (pro) << 20 ) | (fl))
 #define SQOFFBOARD(sq) (fileArray[(sq)]==OFFBOARD)
+
+/***** GLOBALS *****/
+int slidingPieceArray[8] = {wB, wR, wQ, 0, bB, bR, bQ, 0};
+int slidingPieceSide[2] = {0, 4}; //used to index the sliding piece array
+int nonSlidingPieceArray[6] = {wN, wK, 0, bN, bK, 0};
+int nonSlidingPieceSide[2] = {0, 3}; // used to index the non sliding piece array
 
 void addQuietMove(const board& b, int move, moveList* list){
   list->ml_setMove(list->getCount(), move);
@@ -78,6 +85,9 @@ void generateAllMoves(const board& b, moveList* list){
   }
 
   int sq;
+  int dir = 0;
+  int pieceIndex = 0;
+  int piece = EMPTY;
 
   if (b.side == WHITE){
     for (int i=0; i<b.numPieces[wP]; ++i){
@@ -130,5 +140,19 @@ void generateAllMoves(const board& b, moveList* list){
         addCaptureMove(b, MOVE(sq, (sq-11), EMPTY, EMPTY, EPFLAG), list);
       }
     }
+  }
+  //Sliding piece
+  pieceIndex = slidingPieceSide[b.side];
+  piece = slidingPieceArray[pieceIndex++];
+  while (piece != 0){
+    std::cout << "sliding piece index: " << pieceIndex << "piece: " << piece << std::endl;
+    piece = slidingPieceArray[pieceIndex++];
+  }
+  //Non-sliding piece
+  pieceIndex = nonSlidingPieceSide[b.side];
+  piece = nonSlidingPieceArray[pieceIndex++];
+  while (piece != 0){
+    std::cout << "non-sliding piece index: " << pieceIndex << "piece: " << piece << std::endl;
+    piece = nonSlidingPieceArray[pieceIndex++];
   }
 }

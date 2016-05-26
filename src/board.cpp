@@ -146,7 +146,7 @@ int checkBoard(const board& b){
   }
   if (temp_numBigPieces[WHITE] != b.numBigPieces[WHITE] && temp_numBigPieces[BLACK] != b.numBigPieces[BLACK]){
     throw pieceListException();
-  } 
+  }
   if (generatePosKey(b) != b.posKey){
     throw pieceListException();
   }
