@@ -5,6 +5,7 @@
 #include "board.h"
 #include "undo.h"
 #include "movegenerator.h"
+#include "makemove.h"
 #include "init.h"
 #include "io.h"
 #include "threats.h"

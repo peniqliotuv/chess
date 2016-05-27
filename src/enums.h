@@ -70,12 +70,14 @@ extern const int rookMove[4];
 extern const int bishopMove[4];
 extern const int kingMove[8];
 //movegenerator.cpp
-extern int slidingPieceArray[8];
-extern int slidingPieceSide[2];
-extern int nonSlidingPieceArray[6];
-extern int nonSlidingPieceSide[2];
-extern int pieceDir[13][8];
-extern int numDir[13];
+extern const int slidingPieceArray[8];
+extern const int slidingPieceSide[2];
+extern const int nonSlidingPieceArray[6];
+extern const int nonSlidingPieceSide[2];
+extern const int pieceDir[13][8];
+extern const int numDir[13];
+//makemove.cpp
+extern const int castlePermArray[120];
 
 /***** ENUMERATIONS *****/
 enum {EMPTY, wP, wN, wB, wR, wQ, wK, bP, bN, bB, bR, bQ, bK};

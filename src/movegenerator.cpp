@@ -8,11 +8,11 @@
 #define SQOFFBOARD(sq) (fileArray[(sq)]==OFFBOARD)
 
 /***** GLOBALS *****/
-int slidingPieceArray[8] = {wB, wR, wQ, 0, bB, bR, bQ, 0};
-int slidingPieceSide[2] = {0, 4}; //used to index the sliding piece array
-int nonSlidingPieceArray[6] = {wN, wK, 0, bN, bK, 0};
-int nonSlidingPieceSide[2] = {0, 3}; // used to index the non sliding piece array
-int pieceDir[13][8] = { //First index: piece | Second index: directions
+const int slidingPieceArray[8] = {wB, wR, wQ, 0, bB, bR, bQ, 0};
+const int slidingPieceSide[2] = {0, 4}; //used to index the sliding piece array
+const int nonSlidingPieceArray[6] = {wN, wK, 0, bN, bK, 0};
+const int nonSlidingPieceSide[2] = {0, 3}; // used to index the non sliding piece array
+const int pieceDir[13][8] = { //First index: piece | Second index: directions
 	{ 0, 0, 0, 0, 0, 0, 0 },
 	{ 0, 0, 0, 0, 0, 0, 0 },
 	{ -8, -19,	-21, -12, 8, 19, 21, 12 },
@@ -28,7 +28,7 @@ int pieceDir[13][8] = { //First index: piece | Second index: directions
 	{ -1, -10,	1, 10, -9, -11, 11, 9 }
 };
 //How far to loop through for each piece in pieceDir
-int numDir[13] = {0, 0, 8, 4, 4, 8, 8, 0, 8, 4, 4, 8, 8};
+const int numDir[13] = {0, 0, 8, 4, 4, 8, 8, 0, 8, 4, 4, 8, 8};
 
 void addQuietMove(const board& b, int move, moveList* list){
   list->ml_setMove(list->getCount(), move);
