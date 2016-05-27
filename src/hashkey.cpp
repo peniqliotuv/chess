@@ -21,3 +21,19 @@ U64 generatePosKey(const board& b){
 
   return finalKey;
 }
+
+void hashCastleKey(board& b){
+  b.posKey ^= castlePermArray[(b.castlePermission)];
+}
+
+void hashPieceKey(board& b, int piece, int sq){
+  b.posKey ^= pieceKeys[(piece)][(sq)];
+}
+
+void hashSideKey(board& b){
+  b.posKey ^= sideKey;
+}
+
+void hashEnPasKey(board& b){
+  b.posKey ^= pieceKeys[EMPTY][(b.enPassent)];
+}

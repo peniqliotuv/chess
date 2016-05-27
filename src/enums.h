@@ -58,9 +58,9 @@ extern char sideChar[];
 extern char rowChar[];
 extern char fileChar[];
 //pieces.cpp
-extern int isBig[13];
-extern int isMajor[13];
-extern int isMinor[13];
+extern bool isBig[13];
+extern bool isMajor[13];
+extern bool isMinor[13];
 extern int pieceValue[13];
 extern int pieceColor[13];
 extern bool pieceSlides[13];
