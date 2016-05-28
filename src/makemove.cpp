@@ -58,3 +58,59 @@ void clearPiece(const int sq, board& b){
   b.numPieces[piece]--;
   b.pieceList[piece][tempPieceNum] = b.pieceList[piece][b.numPieces[piece]];
 }
+
+void addPiece(const int sq, board& b, int piece){
+  int color = pieceColor[piece];
+
+  hashPieceKey(b, piece, sq);
+  b.pieces[sq] = piece;
+
+  if (isBig[piece]){
+    b.numBigPieces[piece]++;
+    if (isMajor[piece]){
+      b.numMajorPieces[piece]++;
+    }
+    else{
+      b.numMinorPieces[piece]++;
+    }
+  }
+  else{
+    setBit(b.pawns[color], SQ120[sq]);
+    setBit(b.pawns[BOTH], SQ120[sq]);
+  }
+
+  b.materialValue[color] -= pieceValue[piece];
+  b.pieceList[piece][b.numPieces[piece]] = sq;
+  b.numPieces[piece]++;
+}
+
+void movePiece(const int from, const int to, board& b){
+  bool foundPiece = false; //for sanity checking
+
+  int piece = b.pieces[from];
+  int color = pieceColor[piece];
+
+  hashPieceKey(b, piece, from);
+  b.pieces[from] = EMPTY;
+  hashPieceKey(b, piece, to);
+  b.pieces[from] = piece;
+
+  if (!isBig[piece]){ //if it's a pawn
+    clearBit(b.pawns[color], SQ120[from]);
+    clearBit(b.pawns[BOTH], SQ120[from]);
+    setBit(b.pawns[color], SQ120[to]);
+    setBit(b.pawns[BOTH], SQ120[to]);
+  }
+
+  for (int i=0; i<b.numPieces[piece]; ++i){
+    if (b.pieceList[piece][i] == from){
+      b.pieceList[piece][i] = true;
+      foundPiece = true;
+      break;
+    }
+  }
+
+  if (!foundPiece){
+    std::cout << "error: piece not found. cannot move" << std::endl;
+  }
+}

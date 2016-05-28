@@ -6,5 +6,7 @@
 #include "board.h"
 
 void clearPiece(const int sq, board& b);
+void addPiece(const int sq, board& b, int piece);
+void movePiece(const int from, const int to, board& b);
 
 #endif
