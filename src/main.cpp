@@ -31,12 +31,29 @@ using namespace std;
 int main(){
   initialize();
   board* b = new board;
-	parseFen(CASTLE3, *b);
+	parseFen(START_FEN, *b);
 	printBoard(*b);
 	moveList* list = new moveList;
 	generateAllMoves(*b, list);
 	printMoveList(*list);
 
+  int moveNum = 0;
+  int move = 0;
+  int totalMoves = list->getCount();
+
+  for (moveNum = 0; moveNum < totalMoves; ++moveNum){
+    move = list->ml_getMove(moveNum);
+    if (!makeMove(*b, move)){
+      continue;
+    }
+    cout << endl << "MADE: " << printMove(move) << endl;
+    printBoard(*b);
+    takeMove(*b);
+    cout << endl << "TAKEN: " << printMove(move) << endl;
+    printBoard(*b);
+
+
+  }
 
   return 0;
 }

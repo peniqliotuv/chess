@@ -89,12 +89,13 @@ void movePiece(const int from, const int to, board& b){
   bool foundPiece = false; //for sanity checking
 
   int piece = b.pieces[from];
+  //std::cout << "PIece:" << piece << std::endl;
   int color = pieceColor[piece];
 
   hashPieceKey(b, piece, from);
   b.pieces[from] = EMPTY;
   hashPieceKey(b, piece, to);
-  b.pieces[from] = piece;
+  b.pieces[to] = piece;
 
   if (!isBig[piece]){ //if it's a pawn
     clearBit(b.pawns[color], SQ120[from]);
@@ -105,7 +106,7 @@ void movePiece(const int from, const int to, board& b){
 
   for (int i=0; i<b.numPieces[piece]; ++i){
     if (b.pieceList[piece][i] == from){
-      b.pieceList[piece][i] = true;
+      b.pieceList[piece][i] = to;
       foundPiece = true;
       break;
     }
@@ -312,7 +313,7 @@ bool makeMove(board& b, int move){
   }
 
   if (sqAttacked(b.kingSquare[b.side], b.side, b)){
-    //takeMove(b);
+    takeMove(b);
     return false;
   }
   return true;

@@ -126,8 +126,10 @@ int checkBoard(const board& b){
   int sq120, color, pcount, tempPiece;
 
   for (int i = wP; i <= bK; ++i){
+    //std::cout << "Num pieces for " << i << " " << b.numPieces[i] << std::endl;
     for (int j = 0; j < b.numPieces[i]; ++j){
       sq120 = b.pieceList[i][j];
+      //std::cout << b.pieces[sq120] << " " << i << std::endl;
       if (b.pieces[sq120] != i) throw pieceListException();
     }
   }
