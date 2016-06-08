@@ -1,8 +1,9 @@
 //makemove.cpp
 #include "makemove.h"
 #include "hashkey.h"
+#include "threats.h"
+#include "validate.h"
 #include <iostream>
-
 
 //castle permission represented by 4 bits, 15 == 1 1 1 1
 //will be bitwise AND-ing with the array
@@ -113,4 +114,125 @@ void movePiece(const int from, const int to, board& b){
   if (!foundPiece){
     std::cout << "error: piece not found. cannot move" << std::endl;
   }
+}
+
+bool makeMove(board& b, int move){
+  int from = FROMSQ(move);
+  int to = TOSQ(move);
+
+  //Error checking
+  if (!checkBoard(b)){
+    std::cout << "checkboard failed" << std::endl;
+  }
+  if (!SqOnBoard(from)){
+    std::cout << "from square not on board" << std::endl;
+  }
+  if (!SqOnBoard(to)){
+    std::cout << "to square not on board" << std::endl;
+  }
+  if (!SideValid(b.side)){
+    std::cout << "side not valid" << std::endl;
+  }
+  if (!PieceValid(b.pieces[from])){
+    std::cout << "piece not valid" << std::endl;
+  }
+  b.setUndoPosKey(b.plyHistory);
+
+  //If move was enpassent
+  if (move & EPFLAG){
+    if (b.side == WHITE){
+      clearPiece(to-10, b);
+    }
+    else {
+      clearPiece(to+10, b);
+    }
+  }
+  else if (move & CASTLEFLAG){
+    if (to == C1){
+      movePiece(A1, D1, b);
+    }
+    else if (to == C8){
+      movePiece(A8, D8, b);
+    }
+    else if (to == G1){
+      movePiece(H1, F1, b);
+    }
+    else if (to == G8){
+      movePiece(H8, F8, b);
+    }
+    else{
+      std::cout << "CASTLING ERROR" << std::endl;
+    }
+  }
+
+  if (b.enPassent != NO_SQUARE){
+    hashEnPasKey(b);
+  }
+  hashCastleKey(b);
+  //Store new info in the updated history array
+  b.setUndoMove(b.plyHistory, move);
+  b.setUndoFiftyMove(b.plyHistory);
+  b.setUndoEnPassent(b.plyHistory);
+  b.setUndoCastlePerm(b.plyHistory);
+  b.castlePermission &= castlePermArray[to];
+  b.castlePermission &= castlePermArray[from];
+  b.enPassent = NO_SQUARE;
+
+  hashCastleKey(b);
+
+  int capturedPiece = CAPTURED(move);
+  b.fiftyMoves++;
+
+  if (capturedPiece != EMPTY){
+    std::cout << "A piece was captured" << std::endl;
+    clearPiece(to, b);
+    b.fiftyMoves = 0;
+  }
+  b.plyHistory++;
+  b.ply++;
+
+  if (isPawn(b.pieces[from])){
+    b.fiftyMoves = 0;
+    if (move & PAWNFLAG){
+      if (b.side == WHITE){
+        b.enPassent = from + 10;
+        if (rowChar[b.enPassent] != ROW_3){
+          std::cout << "EP error" << std::endl;
+        }
+      }
+      else if (b.side == BLACK){
+        b.enPassent = from - 10;
+        if (rowChar[b.enPassent] != ROW_6){
+          std::cout << "EP ERROR" << std::endl;
+        }
+      }
+      hashEnPasKey(b);
+    }
+  }
+
+  movePiece(from, to, b);
+
+  int promotedPiece = PROMOTED(move);
+  if (promotedPiece != EMPTY){
+    if (isPawn(promotedPiece)){
+      std::cout << "error: promoted piece should not be a pawn" << std::endl;
+    }
+    clearPiece(to, b);
+    addPiece(to, b, promotedPiece);
+  }
+  if (isKing(b.pieces[to])){
+    b.kingSquare[b.side] = to;
+  }
+  b.side ^= 1;
+  hashSideKey(b);
+
+  if (checkBoard(b) != 1){
+    std::cout << "board error" << std::endl;
+  }
+
+  if (sqAttacked(b.kingSquare[b.side], b.side, b)){
+    //takeMove(b);
+    return false;
+  }
+  return true;
 }

@@ -24,6 +24,13 @@ struct board{
 
   undo history[MAX_GAME_MOVES]; //indexed by ply
   int pieceList[13][10]; //13 total pieces, 10 possible of each piece
+
+  //Modifying Undo Struct
+  void setUndoPosKey(int index);
+  void setUndoMove(int index, int move);
+  void setUndoFiftyMove(int index);
+  void setUndoEnPassent(int index);
+  void setUndoCastlePerm(int index);
 };
 
 void resetBoard(board &b);

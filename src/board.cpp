@@ -3,6 +3,7 @@
 #include <iostream>
 #include "board.h"
 #include "hashkey.h"
+#include "undo.h"
 #include "bitboard.h"
 
 //Data Members:
@@ -10,6 +11,27 @@ char pieceChar[] = ".PNBRQKpnbrqk";
 char sideChar[] = "wb-";
 char rowChar[] = "12345678";
 char fileChar[] = "abcdefgh";
+
+//Member Functions:
+void board::setUndoPosKey(int index){
+  this->history[index].setPosKey(this->posKey);
+}
+
+void board::setUndoMove(int index, int move){
+this->history[index].setMove(move);
+}
+
+void board::setUndoFiftyMove(int index){
+  this->history[index].setFiftyMove(this->fiftyMoves);
+}
+
+void board::setUndoEnPassent(int index){
+  this->history[index].setEnPassent(this->enPassent);
+}
+
+void board::setUndoCastlePerm(int index){
+  this->history[index].setCastlePerm(this->castlePermission);
+}
 
 //Resets the board to empty
 void resetBoard(board &b){

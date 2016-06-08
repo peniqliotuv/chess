@@ -5,6 +5,7 @@
 #include "enums.h"
 #include "board.h"
 
+bool isPawn(int p);
 bool isKnight(int p);
 bool isRookQueen(int p);
 bool isBishopQueen(int p);

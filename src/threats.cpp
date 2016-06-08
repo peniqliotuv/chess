@@ -14,6 +14,10 @@ const int kingMove[8] = {-1, -10, 1, 10, -9, -11, 11, 9};
 //relative to a given square in order to be considered
 //"threatening" it
 
+bool isPawn(int p){
+  if (p == wP || p == bP) return true;
+  else return false;
+}
 bool isKnight(int p){
   if (p == wN || p == bN) return true;
   else return false;
