@@ -33,6 +33,22 @@ void board::setUndoCastlePerm(int index){
   this->history[index].setCastlePerm(this->castlePermission);
 }
 
+int board::getPrevMove(){
+  return this->history[this->plyHistory].move;
+}
+
+int board::getPrevCastlePerm(){
+  return this->history[this->plyHistory].castlePermission;
+}
+
+int board::getPrevFiftyMove(){
+  return this->history[this->plyHistory].fiftyMoves;
+}
+
+int board::getPrevEnPassent(){
+  return this->history[this->plyHistory].enPassent;
+}
+
 //Resets the board to empty
 void resetBoard(board &b){
   for (int i=0; i<BOARD_SIZE; ++i){

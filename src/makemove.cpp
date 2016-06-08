@@ -116,6 +116,87 @@ void movePiece(const int from, const int to, board& b){
   }
 }
 
+void takeMove(board& b){
+  if (checkBoard(b) != 1){
+    std::cout << "error" << std::endl;
+  }
+  b.plyHistory--;
+  b.ply--;
+
+  int move = b.getPrevMove();
+  int from = FROMSQ(move);
+  int to = TOSQ(move);
+
+  if (!SqOnBoard(from)){
+    std::cout << "From square is not on board" << std::endl;
+  }
+  if (!SqOnBoard(to)){
+    std::cout << "To square is not on board" << std::endl;
+  }
+  if (b.enPassent != NO_SQUARE){
+    hashEnPasKey(b);
+  }
+
+  hashCastleKey(b);
+  b.castlePermission = b.getPrevCastlePerm();
+  b.fiftyMoves = b.getPrevFiftyMove();
+  b.enPassent = b.getPrevEnPassent();
+
+  if (b.enPassent != NO_SQUARE){
+    hashEnPasKey(b);
+  }
+
+  hashCastleKey(b);
+  b.side ^= 1;
+  hashSideKey(b);
+
+  if (move & EPFLAG){
+    if (b.side == WHITE){
+      addPiece(to-10, b, bP);
+    }
+    else {
+      addPiece(to+10, b, wP);
+    }
+  }
+  else if (move & CASTLEFLAG){
+    if (to == C1){
+      movePiece(D1, A1, b);
+    }
+    else if (to == C8){
+      movePiece(D8, A8, b);
+    }
+    else if (to == G1){
+      movePiece(F1, H1, b);
+    }
+    else if (to == G8){
+      movePiece(F8, H8, b);
+    }
+    else{
+      std::cout << "CASTLING ERROR" << std::endl;
+    }
+  }
+  movePiece(to, from, b);
+  if (isKing(b.pieces[to])){
+    b.kingSquare[b.side] = to;
+  }
+  int capturedPiece = CAPTURED(move);
+  if (capturedPiece != EMPTY){
+    std::cout << "A piece was captured" << std::endl;
+    addPiece(to, b, capturedPiece);
+  }
+  int promotedPiece = PROMOTED(move);
+  if (promotedPiece != EMPTY){
+    if (!PieceValid(promotedPiece)){
+      std::cout << "err promoted piece" << std::endl;
+    }
+    clearPiece(from, b);
+    addPiece(from, b, (pieceColor[promotedPiece] == WHITE ? wP : bP));
+  }
+  if (checkBoard(b) != 1){
+    std::cout << "error" << std::endl;
+  }
+}
+
 bool makeMove(board& b, int move){
   int from = FROMSQ(move);
   int to = TOSQ(move);

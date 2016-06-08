@@ -10,5 +10,6 @@ void addPiece(const int sq, board& b, int piece);
 void movePiece(const int from, const int to, board& b);
 //Returns boolean value if move is valid or not
 bool makeMove(board& b, int move);
+void takeMove(board& b);
 
 #endif
