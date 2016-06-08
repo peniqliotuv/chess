@@ -4,6 +4,7 @@
 #include "bitboard.h"
 #include "board.h"
 #include "undo.h"
+#include "test.h"
 #include "movegenerator.h"
 #include "makemove.h"
 #include "init.h"
@@ -31,18 +32,24 @@ using namespace std;
 int main(){
   initialize();
   board* b = new board;
+
 	parseFen(START_FEN, *b);
 	printBoard(*b);
+
 	moveList* list = new moveList;
 	generateAllMoves(*b, list);
 	printMoveList(*list);
-
+  perfTest(3, *b);
+/*
   int moveNum = 0;
   int move = 0;
   int totalMoves = list->getCount();
+  getchar();
 
   for (moveNum = 0; moveNum < totalMoves; ++moveNum){
     move = list->ml_getMove(moveNum);
+    //cout << printMove(move) << endl;
+    //cout << makeMove(*b, move) << endl;
     if (!makeMove(*b, move)){
       continue;
     }
@@ -51,9 +58,10 @@ int main(){
     takeMove(*b);
     cout << endl << "TAKEN: " << printMove(move) << endl;
     printBoard(*b);
+    getchar();
+  }*/
 
-
-  }
-
+  delete list;
+  delete b;
   return 0;
 }

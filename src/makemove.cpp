@@ -202,6 +202,7 @@ void takeMove(board& b){
 bool makeMove(board& b, int move){
   int from = FROMSQ(move);
   int to = TOSQ(move);
+  int side = b.side;
 
   //Error checking
   if (!checkBoard(b)){
@@ -213,7 +214,7 @@ bool makeMove(board& b, int move){
   if (!SqOnBoard(to)){
     std::cout << "to square not on board" << std::endl;
   }
-  if (!SideValid(b.side)){
+  if (!SideValid(side)){
     std::cout << "side not valid" << std::endl;
   }
   if (!PieceValid(b.pieces[from])){
@@ -223,7 +224,8 @@ bool makeMove(board& b, int move){
 
   //If move was enpassent
   if (move & EPFLAG){
-    if (b.side == WHITE){
+    std::cout << "move was EP" << std::endl;
+    if (side == WHITE){
       clearPiece(to-10, b);
     }
     else {
@@ -231,6 +233,7 @@ bool makeMove(board& b, int move){
     }
   }
   else if (move & CASTLEFLAG){
+    std::cout << "move was castle" << std::endl;
     if (to == C1){
       movePiece(A1, D1, b);
     }
@@ -277,13 +280,13 @@ bool makeMove(board& b, int move){
   if (isPawn(b.pieces[from])){
     b.fiftyMoves = 0;
     if (move & PAWNFLAG){
-      if (b.side == WHITE){
+      if (side == WHITE){
         b.enPassent = from + 10;
         if (rowArray[b.enPassent] != ROW_3){
           std::cout << "EP error " <<  rowChar[b.enPassent] << std::endl;
         }
       }
-      else if (b.side == BLACK){
+      else if (side == BLACK){
         b.enPassent = from - 10;
         if (rowArray[b.enPassent] != ROW_6){
           std::cout << "EP ERROR " << rowChar[b.enPassent]<< std::endl;
@@ -313,7 +316,7 @@ bool makeMove(board& b, int move){
     std::cout << "board error" << std::endl;
   }
 
-  if (sqAttacked(b.kingSquare[b.side], b.side, b)){
+  if (sqAttacked(b.kingSquare[side], b.side, b)){
     takeMove(b);
     return false;
   }

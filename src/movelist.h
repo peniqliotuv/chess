@@ -12,6 +12,8 @@ private:
   int count;
   //How many moves are actually in the movelist
 public:
+  moveList();
+  ~moveList();
   int getCount();
   void ml_setMove(int count, int move);
   void ml_setScore(int count, int score);

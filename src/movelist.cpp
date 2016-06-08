@@ -1,6 +1,12 @@
 //movelist.cpp
 #include "movelist.h"
 
+moveList::moveList(){
+  this->count = 0;
+}
+
+moveList::~moveList(){}
+
 int moveList::getCount(){
   return this->count;
 }

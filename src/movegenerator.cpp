@@ -1,6 +1,7 @@
 //movegenerator.cpp
 #include <iostream>
 #include "threats.h"
+#include "validate.h"
 #include "movegenerator.h"
 
 /***** MACROS *****/
@@ -125,12 +126,14 @@ void generateAllMoves(const board& b, moveList* list){
       if (!SQOFFBOARD(sq) && pieceColor[b.pieces[sq+11]] == BLACK){
         addWPCaptureMove(b, sq, sq+11, b.pieces[sq+11], list);
       }
-      if ((sq+9) == b.enPassent){
-        addCaptureMove(b, MOVE(sq, (sq+9), EMPTY, EMPTY, EPFLAG), list);
-      }
-      if ((sq+11) == b.enPassent){
-        addCaptureMove(b, MOVE(sq, (sq+11), EMPTY, EMPTY, EPFLAG), list);
-      }
+			if (b.enPassent != NO_SQUARE){
+	      if ((sq+9) == b.enPassent){
+	        addEnPasMove(b, MOVE(sq, (sq+9), EMPTY, EMPTY, EPFLAG), list);
+	      }
+	      if ((sq+11) == b.enPassent){
+	        addEnPasMove(b, MOVE(sq, (sq+11), EMPTY, EMPTY, EPFLAG), list);
+	      }
+			}
     }
     if (b.castlePermission & whiteKingCastle){
       if (b.pieces[G1] == EMPTY && b.pieces[F1] == EMPTY){
@@ -166,12 +169,14 @@ void generateAllMoves(const board& b, moveList* list){
       if (!SQOFFBOARD(sq) && pieceColor[b.pieces[sq-11]] == WHITE){
         addBPCaptureMove(b, sq, sq-11, b.pieces[sq-11], list);
       }
-      if ((sq-9) == b.enPassent){
-        addCaptureMove(b, MOVE(sq, (sq-9), EMPTY, EMPTY, EPFLAG), list);
-      }
-      if ((sq-11) == b.enPassent){
-        addCaptureMove(b, MOVE(sq, (sq-11), EMPTY, EMPTY, EPFLAG), list);
-      }
+			if (b.enPassent != NO_SQUARE){
+	      if ((sq-9) == b.enPassent){
+	        addEnPasMove(b, MOVE(sq, (sq-9), EMPTY, EMPTY, EPFLAG), list);
+	      }
+	      if ((sq-11) == b.enPassent){
+	        addEnPasMove(b, MOVE(sq, (sq-11), EMPTY, EMPTY, EPFLAG), list);
+	      }
+			}
     }
     if (b.castlePermission & blackKingCastle){
       if (b.pieces[G8] == EMPTY && b.pieces[F8] == EMPTY){
@@ -243,4 +248,5 @@ void generateAllMoves(const board& b, moveList* list){
     }
     piece = nonSlidingPieceArray[pieceIndex++];
   }
+	//std::cout << "total count: " << std::dec << list->getCount() << std::endl;
 }

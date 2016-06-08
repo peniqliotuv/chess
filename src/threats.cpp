@@ -55,7 +55,7 @@ bool sqAttacked(const int sq, const int side, const board& b){
   //Knights
   for (int i=0; i<8; ++i){
     tempPiece = b.pieces[sq + knightMove[i]];
-    if (isKnight(tempPiece) && pieceColor[tempPiece] == side) return true;
+    if (tempPiece != OFFBOARD && isKnight(tempPiece) && pieceColor[tempPiece] == side) return true;
   }
   //Rooks and Queens
   for (int i=0; i<4; ++i){
@@ -88,7 +88,7 @@ bool sqAttacked(const int sq, const int side, const board& b){
   //Kings
   for (int i=0; i<8; ++i){
     tempPiece = b.pieces[sq + kingMove[i]];
-    if (isKing(tempPiece) && pieceColor[tempPiece] == side) return true;
+    if (tempPiece != OFFBOARD && isKing(tempPiece) && pieceColor[tempPiece] == side) return true;
   }
 
   return false;

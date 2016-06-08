@@ -1,5 +1,6 @@
 #ifndef VALIDATE
 #define VALIDATE
+
 #include "enums.h"
 
 bool SqOnBoard(const int sq);
