@@ -2,6 +2,7 @@
 #include "makemove.h"
 #include "hashkey.h"
 #include "threats.h"
+#include "io.h"
 #include "validate.h"
 #include <iostream>
 
@@ -278,14 +279,14 @@ bool makeMove(board& b, int move){
     if (move & PAWNFLAG){
       if (b.side == WHITE){
         b.enPassent = from + 10;
-        if (rowChar[b.enPassent] != ROW_3){
-          std::cout << "EP error" << std::endl;
+        if (rowArray[b.enPassent] != ROW_3){
+          std::cout << "EP error " <<  rowChar[b.enPassent] << std::endl;
         }
       }
       else if (b.side == BLACK){
         b.enPassent = from - 10;
-        if (rowChar[b.enPassent] != ROW_6){
-          std::cout << "EP ERROR" << std::endl;
+        if (rowArray[b.enPassent] != ROW_6){
+          std::cout << "EP ERROR " << rowChar[b.enPassent]<< std::endl;
         }
       }
       hashEnPasKey(b);
