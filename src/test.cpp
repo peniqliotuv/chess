@@ -19,9 +19,8 @@ void test(int depth, board& b){
   }
   moveList* list = new moveList;
   generateAllMoves(b, list);
-  int totalMoves = list->getCount();
 
-  for (int i=0; i<totalMoves; ++i){
+  for (int i=0; i<list->getCount(); ++i){
     if (!makeMove(b, list->ml_getMove(i))){
       continue;
     }
@@ -34,6 +33,7 @@ void test(int depth, board& b){
 void perfTest(int depth, board& b){
   if (checkBoard(b) != 1) std::cout << "test failed " << std::endl;
   printBoard(b);
+  std::cout << "*****PERFT TESTING*****" << std::endl;
   std::cout << "Testing to depth of: " << depth << std::endl;
   leafNodes = 0;
   moveList* list = new moveList;
@@ -45,14 +45,15 @@ void perfTest(int depth, board& b){
 
   for (int i=0; i<list->getCount(); ++i){
     move = list->ml_getMove(i);
-    //std::cout << printMove(move) << std::endl;
+    std::cout << printMove(move) << std::endl;
     //std::cout << makeMove(b, move) << std::endl;
-    if (!makeMove(b, list->ml_getMove(i))){
+    if (!makeMove(b, move)){
       continue;
     }
     long totalNodes = leafNodes;
     test(depth-1, b);
     takeMove(b);
+    std::cout << printMove(move) << std::endl;
     long oldNodes = leafNodes - totalNodes;
     std::cout << "Move: " << (i+1) << " : " << printMove(move) << " : " << oldNodes << std::endl;
   }

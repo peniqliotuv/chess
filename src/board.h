@@ -26,11 +26,11 @@ struct board{
   int pieceList[13][10]; //13 total pieces, 10 possible of each piece
 
   //Mutators for Undo Struct
-  void setUndoPosKey(int index);
-  void setUndoMove(int index, int move);
-  void setUndoFiftyMove(int index);
-  void setUndoEnPassent(int index);
-  void setUndoCastlePerm(int index);
+  void setUndoPosKey();
+  void setUndoMove(int move);
+  void setUndoFiftyMove();
+  void setUndoEnPassent();
+  void setUndoCastlePerm();
   //Accessors for Undo struct
   int getPrevMove();
   int getPrevCastlePerm();

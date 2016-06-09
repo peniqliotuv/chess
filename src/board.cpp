@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <iostream>
 #include "board.h"
+#include "io.h"
 #include "hashkey.h"
 #include "undo.h"
 #include "bitboard.h"
@@ -13,27 +14,28 @@ char rowChar[] = "12345678";
 char fileChar[] = "abcdefgh";
 
 //Member Functions:
-void board::setUndoPosKey(int index){
-  this->history[index].setPosKey(this->posKey);
+void board::setUndoPosKey(){
+  this->history[this->plyHistory].setPosKey(this->posKey);
 }
 
-void board::setUndoMove(int index, int move){
-this->history[index].setMove(move);
+void board::setUndoMove(int move){
+this->history[this->plyHistory].setMove(move);
 }
 
-void board::setUndoFiftyMove(int index){
-  this->history[index].setFiftyMove(this->fiftyMoves);
+void board::setUndoFiftyMove(){
+  this->history[this->plyHistory].setFiftyMove(this->fiftyMoves);
 }
 
-void board::setUndoEnPassent(int index){
-  this->history[index].setEnPassent(this->enPassent);
+void board::setUndoEnPassent(){
+  this->history[this->plyHistory].setEnPassent(this->enPassent);
 }
 
-void board::setUndoCastlePerm(int index){
-  this->history[index].setCastlePerm(this->castlePermission);
+void board::setUndoCastlePerm(){
+  this->history[this->plyHistory].setCastlePerm(this->castlePermission);
 }
 
 int board::getPrevMove(){
+  //std::cout << printMove(this->history[this->plyHistory].move) << std::endl;
   return this->history[this->plyHistory].move;
 }
 
@@ -91,7 +93,7 @@ void updateMateriaList(board& b){
       if (isMinor[piece]) b.numMinorPieces[color]++;
       if (isMajor[piece]) b.numMajorPieces[color]++;
 
-      b.materialValue[color] += pieceValue[color];
+      b.materialValue[color] += pieceValue[piece];
       b.pieceList[piece][b.numPieces[piece]] = sq;
       b.numPieces[piece]++;
 
@@ -116,9 +118,7 @@ int checkBoard(const board& b){
   int temp_numMajorPieces[2] = {0,0};
   int temp_numBigPieces[2] = {0,0};
   int temp_materialValue[2] = {0,0};
-
   U64 temp_pawns[3] = {0ULL, 0ULL, 0ULL};
-
   temp_pawns[WHITE] = b.pawns[WHITE];
   temp_pawns[BLACK] = b.pawns[BLACK];
   temp_pawns[BOTH] = b.pawns[BOTH];
@@ -126,10 +126,12 @@ int checkBoard(const board& b){
   int sq120, color, pcount, tempPiece;
 
   for (int i = wP; i <= bK; ++i){
-    //std::cout << "Num pieces for " << i << " " << b.numPieces[i] << std::endl;
+    //std::cout << "Num pieces for " << std::dec << i << ": " << b.numPieces[i] << std::endl;
     for (int j = 0; j < b.numPieces[i]; ++j){
       sq120 = b.pieceList[i][j];
-      //std::cout << b.pieces[sq120] << " " << i << std::endl;
+      //std::cout << "On: " << printSquare(sq120) << std::endl;
+      //printPiece(b.pieces[sq120]);
+      //printPiece(i);
       if (b.pieces[sq120] != i) throw pieceListException();
     }
   }
@@ -143,7 +145,7 @@ int checkBoard(const board& b){
     if (isMinor[tempPiece]) temp_numMinorPieces[color]++;
     if (isMajor[tempPiece]) temp_numMajorPieces[color]++;
 
-    temp_materialValue[color] += pieceValue[color];
+    temp_materialValue[color] += pieceValue[tempPiece];
   }
 
   for (int i = wP; i<= bK; ++i){
@@ -176,12 +178,16 @@ int checkBoard(const board& b){
   }
 
   if (temp_materialValue[WHITE] != b.materialValue[WHITE] || temp_materialValue[BLACK] != b.materialValue[BLACK]){
+    std::cout << "TmpWhite: " << std::dec <<temp_materialValue[WHITE] << " White: " << std::dec <<b.materialValue[WHITE] << std::endl;
+    std::cout << "Tmpblack: " << std::dec << temp_materialValue[BLACK] << " black: " <<std::dec << b.materialValue[BLACK] << std::endl;
     throw pieceListException();
   }
   if (temp_numMajorPieces[WHITE] != b.numMajorPieces[WHITE] || temp_numMajorPieces[BLACK] != b.numMajorPieces[BLACK]){
     throw pieceListException();
   }
   if (temp_numMinorPieces[WHITE] != b.numMinorPieces[WHITE] || temp_numMinorPieces[BLACK] != b.numMinorPieces[BLACK]){
+    std::cout << "TmpWhite: " << std::dec << temp_numMinorPieces[WHITE] << " White: " << std::dec <<b.numMinorPieces[WHITE] << std::endl;
+    std::cout << "Tmpblack: " << std::dec << temp_numMinorPieces[BLACK] << " black: " <<std::dec << b.numMinorPieces[BLACK] << std::endl;
     throw pieceListException();
   }
   if (temp_numBigPieces[WHITE] != b.numBigPieces[WHITE] && temp_numBigPieces[BLACK] != b.numBigPieces[BLACK]){
@@ -292,7 +298,7 @@ int parseFen(char* fen, board& b){
 void printBoard(const board& b){
   int sq, file, row, piece;
 
-  std::cout << "*******GAME BOARD*******" << std::endl;
+  std::cout << std::endl << "*******GAME BOARD*******" << std::endl;
   for (row = ROW_8; row >= ROW_1; row--){
     std::cout << row+1 << "   ";
     for (file = FILE_A; file <= FILE_H; ++file){

@@ -13,5 +13,6 @@ std::string printSquare(const int sq);
 //refers to what piece was captured (if any)
 std::string printMove(const int move);
 void printMoveList(moveList& list);
+void printPiece(int index);
 
 #endif
