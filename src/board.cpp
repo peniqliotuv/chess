@@ -126,12 +126,8 @@ int checkBoard(const board& b){
   int sq120, color, pcount, tempPiece;
 
   for (int i = wP; i <= bK; ++i){
-    //std::cout << "Num pieces for " << std::dec << i << ": " << b.numPieces[i] << std::endl;
     for (int j = 0; j < b.numPieces[i]; ++j){
       sq120 = b.pieceList[i][j];
-      //std::cout << "On: " << printSquare(sq120) << std::endl;
-      //printPiece(b.pieces[sq120]);
-      //printPiece(i);
       if (b.pieces[sq120] != i) throw pieceListException();
     }
   }
@@ -143,11 +139,9 @@ int checkBoard(const board& b){
     color = pieceColor[tempPiece];
     if (isBig[tempPiece]) temp_numBigPieces[color]++;
     if (isMinor[tempPiece]) {
-      std::cout << tempPiece << " on: " << printSquare(sq120) << std::endl;
       temp_numMinorPieces[color]++;
     }
     if (isMajor[tempPiece]) temp_numMajorPieces[color]++;
-
     temp_materialValue[color] += pieceValue[tempPiece];
   }
 

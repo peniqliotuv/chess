@@ -26,6 +26,7 @@
 #define CASTLE1 "r3k2r/8/8/8/8/8/8/R3K2R w KQkq - 0 1"
 #define CASTLE2 "3rk2r/8/8/8/8/8/6p1/R3K2R w KQk - 0 1"
 #define CASTLE3 "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1"
+#define PERFTFEN "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1"
 
 using namespace std;
 
@@ -33,33 +34,13 @@ int main(){
   initialize();
   board* b = new board;
 
-	parseFen(START_FEN, *b);
+	parseFen(PERFTFEN, *b);
 	printBoard(*b);
 
 	moveList* list = new moveList;
 	generateAllMoves(*b, list);
 	printMoveList(*list);
-  perfTest(3, *b);
-/*
-  int moveNum = 0;
-  int move = 0;
-  int totalMoves = list->getCount();
-  getchar();
-
-  for (moveNum = 0; moveNum < totalMoves; ++moveNum){
-    move = list->ml_getMove(moveNum);
-    //cout << printMove(move) << endl;
-    //cout << makeMove(*b, move) << endl;
-    if (!makeMove(*b, move)){
-      continue;
-    }
-    cout << endl << "MADE: " << printMove(move) << endl;
-    printBoard(*b);
-    takeMove(*b);
-    cout << endl << "TAKEN: " << printMove(move) << endl;
-    printBoard(*b);
-    getchar();
-  }*/
+  perfTest(4, *b);
 
   delete list;
   delete b;

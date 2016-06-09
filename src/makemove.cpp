@@ -62,13 +62,7 @@ void clearPiece(const int sq, board& b){
     std::cout << "Error" << std::endl;
   }
   b.numPieces[piece]--;
-  std::cout << "********" << std::endl;
-  printPiece(piece);
-  std::cout << "On: " << printSquare(b.pieceList[piece][tempPieceNum]) << std::endl;
-  printPiece(b.pieces[b.pieceList[piece][tempPieceNum]]);
-  printPiece(b.pieces[b.pieceList[piece][b.numPieces[piece]]]);
   b.pieceList[piece][tempPieceNum] = b.pieceList[piece][b.numPieces[piece]];
-  printPiece(b.pieces[b.pieceList[piece][tempPieceNum]]);
 }
 
 void addPiece(const int sq, board& b, int piece){
@@ -130,7 +124,6 @@ void movePiece(const int from, const int to, board& b){
 }
 
 void takeMove(board& b){
-  std::cout << "   TAKE MOVE:   " << std::endl;
   if (checkBoard(b) != 1){
     std::cout << "error" << std::endl;
   }
@@ -140,7 +133,6 @@ void takeMove(board& b){
   int move = b.getPrevMove();
   int from = FROMSQ(move);
   int to = TOSQ(move);
-  std::cout << "PRINT MOVE: " << printMove(move) << std::endl;
   if (!SqOnBoard(from)){
     std::cout << "From square is not on board" << std::endl;
   }
@@ -183,10 +175,8 @@ void takeMove(board& b){
     b.kingSquare[b.side] = from;
   }
   int capturedPiece = CAPTURED(move);
-  printPiece(capturedPiece);
   if (capturedPiece != EMPTY){
     if (!PieceValid(capturedPiece)) std::cout << "captured piece not valid" << std::endl;
-    std::cout << "A piece was captured" << std::endl;
     addPiece(to, b, capturedPiece);
   }
 
@@ -204,8 +194,6 @@ void takeMove(board& b){
 }
 
 bool makeMove(board& b, int move){
-  std::cout << "        BEFORE: " << std::endl;
-  printBoard(b);
   int from = FROMSQ(move);
   int to = TOSQ(move);
   int side = b.side;
@@ -227,9 +215,7 @@ bool makeMove(board& b, int move){
   }
   b.setUndoPosKey();
 
-  //If move was enpassent
-  if (move & EPFLAG){
-    std::cout << "move was EP" << std::endl;
+  if (move & EPFLAG){ //If move was enpassent
     if (side == WHITE){
       clearPiece(to-10, b);
     }
@@ -238,7 +224,6 @@ bool makeMove(board& b, int move){
     }
   }
   else if (move & CASTLEFLAG){
-    std::cout << "move was castle" << std::endl;
     switch(to) {
         case C1: movePiece(A1, D1, b); break;
         case C8: movePiece(A8, D8, b); break;
@@ -270,7 +255,6 @@ bool makeMove(board& b, int move){
   b.fiftyMoves++;
 
   if (capturedPiece != EMPTY){
-    std::cout << capturedPiece << " was captured" << std::endl;
     clearPiece(to, b);
     b.fiftyMoves = 0;
   }
@@ -291,9 +275,7 @@ bool makeMove(board& b, int move){
       hashEnPasKey(b);
     }
   }
-
   movePiece(from, to, b);
-
   int promotedPiece = PROMOTED(move);
   if (promotedPiece != EMPTY){
     if (isPawn(promotedPiece)) std::cout << "error: promoted piece should not be a pawn" << std::endl;
@@ -302,24 +284,16 @@ bool makeMove(board& b, int move){
     addPiece(to, b, promotedPiece);
   }
   if (isKing(b.pieces[to])){
-    std::cout << "is king" << std::endl;
     b.kingSquare[b.side] = to;
   }
   b.side ^= 1;
   hashSideKey(b);
-
-  //THIS IS A CAPTURE ERROR ERROR
-  std::cout << "Move: " << printMove(move) << " to: " << printMove(to) << " from: " << printMove(from) << std::endl;
   if (checkBoard(b) != 1){
     std::cout << "board error" << std::endl;
   }
-
   if (sqAttacked(b.kingSquare[side], b.side, b)){
     takeMove(b);
     return false;
   }
-  //FOR DEBUGGING BELOW
-  std::cout << "        AFTER: " << std::endl;
-  printBoard(b);
   return true;
 }
