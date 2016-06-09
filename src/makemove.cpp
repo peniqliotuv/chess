@@ -63,8 +63,8 @@ void clearPiece(const int sq, board& b){
   }
   b.numPieces[piece]--;
   std::cout << "********" << std::endl;
-  std::cout << tempPieceNum << std::endl;
-  std::cout << printSquare(b.pieceList[piece][tempPieceNum]) << std::endl;
+  printPiece(piece);
+  std::cout << "On: " << printSquare(b.pieceList[piece][tempPieceNum]) << std::endl;
   printPiece(b.pieces[b.pieceList[piece][tempPieceNum]]);
   printPiece(b.pieces[b.pieceList[piece][b.numPieces[piece]]]);
   b.pieceList[piece][tempPieceNum] = b.pieceList[piece][b.numPieces[piece]];
@@ -81,12 +81,12 @@ void addPiece(const int sq, board& b, int piece){
   b.pieces[sq] = piece;
 
   if (isBig[piece]){
-    b.numBigPieces[piece]++;
+    b.numBigPieces[color]++;
     if (isMajor[piece]){
-      b.numMajorPieces[piece]++;
+      b.numMajorPieces[color]++;
     }
     else{
-      b.numMinorPieces[piece]++;
+      b.numMinorPieces[color]++;
     }
   }
   else{
@@ -130,6 +130,7 @@ void movePiece(const int from, const int to, board& b){
 }
 
 void takeMove(board& b){
+  std::cout << "   TAKE MOVE:   " << std::endl;
   if (checkBoard(b) != 1){
     std::cout << "error" << std::endl;
   }
@@ -139,7 +140,7 @@ void takeMove(board& b){
   int move = b.getPrevMove();
   int from = FROMSQ(move);
   int to = TOSQ(move);
-//std::cout << "PRINT MOVE:  " << printMove(move) << std::endl;
+  std::cout << "PRINT MOVE: " << printMove(move) << std::endl;
   if (!SqOnBoard(from)){
     std::cout << "From square is not on board" << std::endl;
   }
@@ -150,19 +151,15 @@ void takeMove(board& b){
     hashEnPasKey(b);
   }
   hashCastleKey(b);
-
   b.castlePermission = b.getPrevCastlePerm();
   b.fiftyMoves = b.getPrevFiftyMove();
   b.enPassent = b.getPrevEnPassent();
-
   if (b.enPassent != NO_SQUARE){
     hashEnPasKey(b);
   }
   hashCastleKey(b);
-
   b.side ^= 1;
   hashSideKey(b);
-
   if (move & EPFLAG){
     if (b.side == WHITE){
       addPiece(to-10, b, bP);
@@ -185,7 +182,6 @@ void takeMove(board& b){
   if (isKing(b.pieces[from])){
     b.kingSquare[b.side] = from;
   }
-
   int capturedPiece = CAPTURED(move);
   printPiece(capturedPiece);
   if (capturedPiece != EMPTY){

@@ -57,6 +57,6 @@ void perfTest(int depth, board& b){
     long oldNodes = leafNodes - totalNodes;
     std::cout << "Move: " << (i+1) << " : " << printMove(move) << " : " << oldNodes << std::endl;
   }
-  std::cout << "Testing complete. " << leafNodes << " total nodes visited." << std::endl;
+  std::cout << "Testing complete. " << std::dec << leafNodes << " total nodes visited." << std::endl;
   delete list;
 }

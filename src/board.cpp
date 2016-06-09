@@ -142,7 +142,10 @@ int checkBoard(const board& b){
     temp_numPieces[tempPiece]++;
     color = pieceColor[tempPiece];
     if (isBig[tempPiece]) temp_numBigPieces[color]++;
-    if (isMinor[tempPiece]) temp_numMinorPieces[color]++;
+    if (isMinor[tempPiece]) {
+      std::cout << tempPiece << " on: " << printSquare(sq120) << std::endl;
+      temp_numMinorPieces[color]++;
+    }
     if (isMajor[tempPiece]) temp_numMajorPieces[color]++;
 
     temp_materialValue[color] += pieceValue[tempPiece];
@@ -322,5 +325,5 @@ void printBoard(const board& b){
   b.castlePermission & whiteQueenCastle ? (std::cout << 'Q') : (std::cout << '-');
   b.castlePermission & blackKingCastle ? (std::cout << 'k') : (std::cout << '-');
   b.castlePermission & blackQueenCastle ? (std::cout << 'q') : (std::cout << '-');
-  std::cout << std::endl << "Position Key: " << std::hex<< b.posKey << std::endl;
+  std::cout << std::endl << "Position Key: " << std::hex<< b.posKey << std::endl << std::endl;
 }
