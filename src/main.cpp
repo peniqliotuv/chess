@@ -63,6 +63,9 @@ int main(){
         }
       }
     }
+    else if (cin.fail()){
+      cin.clear();
+    }
   }
 	/*printBoard(*b);
 

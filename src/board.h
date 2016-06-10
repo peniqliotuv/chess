@@ -3,9 +3,11 @@
 #define BOARD
 
 #include "enums.h"
+#include "pvt.h"
 #include "undo.h"
 
 struct board{
+  /***** Data Members*****/
   int pieces[BOARD_SIZE];
   U64 pawns[3];
   int kingSquare[2];
@@ -25,6 +27,9 @@ struct board{
   undo history[MAX_GAME_MOVES]; //indexed by ply
   int pieceList[13][10]; //13 total pieces, 10 possible of each piece
 
+  PVTable* PVT;
+
+  /***** Methods *****/
   //Mutators for Undo Struct
   void setUndoPosKey();
   void setUndoMove(int move);

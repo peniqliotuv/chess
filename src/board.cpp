@@ -3,6 +3,7 @@
 #include <iostream>
 #include "board.h"
 #include "io.h"
+#include "pvt.h"
 #include "hashkey.h"
 #include "undo.h"
 #include "bitboard.h"
@@ -75,6 +76,8 @@ void resetBoard(board &b){
   for (int i=0; i<13; ++i){
     b.numPieces[i] = 0;
   }
+
+  initPVT(b.PVT);
 
   b.kingSquare[0] = b.kingSquare[1] = NO_SQUARE;
   b.side = BOTH;
