@@ -8,6 +8,7 @@
 #include "movegenerator.h"
 
 #include <iostream>
+#include <ctime>
 
 long leafNodes;
 
@@ -40,8 +41,12 @@ void perfTest(int depth, board& b){
 
   generateAllMoves(b, list);
 
+  clock_t start;
+  double duration;
+  start = clock();
+
   int move;
-  std::cout << "total moves: " << std::dec << list->getCount() << std::endl;
+  std::cout << "Total Moves: " << std::dec << list->getCount() << std::endl;
 
   for (int i=0; i<list->getCount(); ++i){
     move = list->ml_getMove(i);
@@ -57,6 +62,8 @@ void perfTest(int depth, board& b){
     long oldNodes = leafNodes - totalNodes;
     std::cout << "Move: " << (i+1) << " : " << printMove(move) << " : " << oldNodes << std::endl;
   }
-  std::cout << "Testing complete. " << std::dec << leafNodes << " total nodes visited." << std::endl;
+  duration = 1000 * ((clock() - start) / (double) CLOCKS_PER_SEC);
+  std::cout << "Testing complete. " << std::dec << leafNodes <<
+  " total nodes visited in: " << duration << "ms" << std::endl;
   delete list;
 }

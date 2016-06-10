@@ -49,6 +49,9 @@ int main(){
         takeMove(*b);
         continue;
       }
+      else if (io[0] == 'p'){
+        perfTest(4, *b);
+      }
       else {
         mv = parseMove(io, *b);
         if (mv != NOMOVE){
