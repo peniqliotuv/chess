@@ -36,6 +36,7 @@ struct board{
   int getPrevCastlePerm();
   int getPrevFiftyMove();
   int getPrevEnPassent();
+  U64 getPrevPosKey(int index) const;
 };
 
 void resetBoard(board &b);

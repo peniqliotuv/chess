@@ -8,6 +8,7 @@
 #include "movegenerator.h"
 #include "makemove.h"
 #include "init.h"
+#include "search.h"
 #include "io.h"
 #include "threats.h"
 
@@ -35,7 +36,7 @@ int main(){
   initialize();
   board* b = new board;
 
-	parseFen(PERFTFEN2, *b);
+	parseFen(START_FEN, *b);
   char io[6];
   int mv = NOMOVE;
   while (1){
@@ -52,6 +53,10 @@ int main(){
         mv = parseMove(io, *b);
         if (mv != NOMOVE){
           makeMove(*b, mv);
+          if (isRepetition(*b)) cout << "REPETITION" << endl;
+        }
+        else {
+          cout << "Failed to parse move" << endl;
         }
       }
     }

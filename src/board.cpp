@@ -51,6 +51,10 @@ int board::getPrevEnPassent(){
   return this->history[this->plyHistory].enPassent;
 }
 
+U64 board::getPrevPosKey(int index) const{
+  return this->history[index].posKey;
+}
+
 //Resets the board to empty
 void resetBoard(board &b){
   for (int i=0; i<BOARD_SIZE; ++i){

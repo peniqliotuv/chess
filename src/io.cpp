@@ -86,7 +86,6 @@ int parseMove(char* move, board& b){
   int from = toSquareNumber(move[0] - 'a', move[1] - '1');
   int to = toSquareNumber(move[2] - 'a', move[3] - '1');
 
-  std::cout << "Move: " << std::dec << move << " From: " << std:: dec << from << " To: " << to << std::endl;
   if (!(SqOnBoard(from) && SqOnBoard(to))) std::cout << "squares are not on board" << std::endl;
 
   moveList* list = new moveList;
