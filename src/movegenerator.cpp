@@ -150,7 +150,6 @@ void generateAllMoves(const board& b, moveList* list){
       }
     }
   }
-
   else if (b.side == BLACK){
     for (int i=0; i<b.numPieces[bP]; ++i){
       sq = b.pieceList[bP][i];
@@ -193,7 +192,6 @@ void generateAllMoves(const board& b, moveList* list){
       }
     }
   }
-
   //Sliding piece
   pieceIndex = slidingPieceSide[b.side];
   piece = slidingPieceArray[pieceIndex++];
@@ -221,7 +219,6 @@ void generateAllMoves(const board& b, moveList* list){
     }
     piece = slidingPieceArray[pieceIndex++];
   }
-
   //Non-sliding piece
   pieceIndex = nonSlidingPieceSide[b.side];
   piece = nonSlidingPieceArray[pieceIndex++];
@@ -248,5 +245,4 @@ void generateAllMoves(const board& b, moveList* list){
     }
     piece = nonSlidingPieceArray[pieceIndex++];
   }
-	//std::cout << "total count: " << std::dec << list->getCount() << std::endl;
 }

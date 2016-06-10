@@ -1,7 +1,10 @@
 //io.cpp
 #include "io.h"
 #include "enums.h"
+#include "movelist.h"
+#include "validate.h"
 #include "threats.h"
+#include "movegenerator.h"
 
 std::string rowStrings[8] = {"1", "2", "3", "4", "5", "6", "7", "8"};
 std::string fileStrings[8] = {"a", "b", "c", "d", "e", "f", "g", "h"};
@@ -72,4 +75,54 @@ void printPiece(int index){
     case 12: std::cout << "bK " << std::endl; break;
     default: std::cout << "Piece doesn't exist." << std::endl;
   }
+}
+
+int parseMove(char* move, board& b){
+  if (move[1] > '8' || move[1] < '1') return false;
+  if (move[3] > '8' || move[3] < '1') return false;
+  if (move[2] > 'h' || move[2] < 'a') return false;
+  if (move[0] > 'h' || move[0] < 'a') return false;
+
+  int from = toSquareNumber(move[0] - 'a', move[1] - '1');
+  int to = toSquareNumber(move[2] - 'a', move[3] - '1');
+
+  std::cout << "Move: " << std::dec << move << " From: " << std:: dec << from << " To: " << to << std::endl;
+  if (!(SqOnBoard(from) && SqOnBoard(to))) std::cout << "squares are not on board" << std::endl;
+
+  moveList* list = new moveList;
+  generateAllMoves(b, list);
+
+  int mv;
+  int promotion = EMPTY; //Was there a promoted piece?
+
+  for (int i=0; i< list->getCount(); ++i){
+    mv = list->ml_getMove(i);
+    if (FROMSQ(mv) == from && TOSQ(mv) == to){
+      promotion = PROMOTED(mv);
+      if (promotion != EMPTY){
+        if (isRookQueen(promotion) && !isBishopQueen(promotion) && move[4] == 'r'){
+          delete list;
+          return mv;
+        }
+        else if (isBishopQueen(promotion) && !isRookQueen(promotion) && move[4] =='b'){
+          delete list;
+          return mv;
+        }
+        else if (isRookQueen(promotion) && isBishopQueen(promotion) && move[4] == 'q'){
+          delete list;
+          return mv;
+        }
+        else if (isKnight(promotion) && move[4] == 'n'){
+          delete list;
+          return mv;
+        }
+        continue;
+      }
+      delete list;
+      return mv;
+    }
+  }
+  //If no move was found
+  delete list;
+  return NOMOVE;
 }

@@ -28,7 +28,7 @@ void clearPiece(const int sq, board& b){
   if (!SqOnBoard(sq)) std::cout << "sq not on board" << std::endl;
 
   int piece = b.pieces[sq];
-  if (!PieceValid(piece)) std::cout << "piece not valid" << std::endl;
+  if (!PieceValid(piece)) std::cout << "piece not valid CLEAR" << std::endl;
 
   int color = pieceColor[piece];
   int tempPieceNum = -1;
@@ -67,7 +67,7 @@ void clearPiece(const int sq, board& b){
 
 void addPiece(const int sq, board& b, int piece){
   if (!SqOnBoard(sq)) std::cout << "sq not on board" << std::endl;
-  if (!PieceValid(piece)) std::cout << "piece not valid" << std::endl;
+  if (!PieceValid(piece)) std::cout << "piece not valid ADD" << std::endl;
 
   int color = pieceColor[piece];
 
@@ -119,7 +119,7 @@ void movePiece(const int from, const int to, board& b){
     }
   }
   if (!foundPiece){
-    std::cout << "error: piece not found. cannot move" << std::endl;
+    std::cout << "error: piece not found. piece was: " << piece << std::endl;
   }
 }
 
@@ -211,7 +211,7 @@ bool makeMove(board& b, int move){
     std::cout << "side not valid" << std::endl;
   }
   if (!PieceValid(b.pieces[from])){
-    std::cout << "piece not valid" << std::endl;
+    std::cout << "piece not valid MAKEMOVE" << std::endl;
   }
   b.setUndoPosKey();
 

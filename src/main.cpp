@@ -27,6 +27,7 @@
 #define CASTLE2 "3rk2r/8/8/8/8/8/6p1/R3K2R w KQk - 0 1"
 #define CASTLE3 "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1"
 #define PERFTFEN "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1"
+#define PERFTFEN2 "n1n5/PPPk4/8/8/8/8/4Kppp/5N1N w - - 0 1"
 
 using namespace std;
 
@@ -34,15 +35,35 @@ int main(){
   initialize();
   board* b = new board;
 
-	parseFen(PERFTFEN, *b);
-	printBoard(*b);
+	parseFen(PERFTFEN2, *b);
+  char io[6];
+  int mv = NOMOVE;
+  while (1){
+    printBoard(*b);
+    cout << "Please enter a move. " << std::endl;
+    cin.getline(io, 6);
+    if (!cin.fail()){
+      if (io[0] == 'q') break;
+      else if (io[0] == 't') {
+        takeMove(*b);
+        continue;
+      }
+      else {
+        mv = parseMove(io, *b);
+        if (mv != NOMOVE){
+          makeMove(*b, mv);
+        }
+      }
+    }
+  }
+	/*printBoard(*b);
 
 	moveList* list = new moveList;
 	generateAllMoves(*b, list);
 	printMoveList(*list);
-  perfTest(4, *b);
+  perfTest(4, *b);*/
 
-  delete list;
+  //delete list;
   delete b;
   return 0;
 }

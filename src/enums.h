@@ -29,10 +29,10 @@ class pieceListException : public std::exception{
 #define setBit(bb, sq) ((bb) |= setMask[(sq)])
 #define START_FEN "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
 
-#define FROMSQ(m) ( (m) & 0x7F);
-#define TOSQ(m) ( ( (m) >> 7) & 0x7F);
-#define CAPTURED(m) ( ( (m) >> 14) & 0xF); //what piece was captured
-#define PROMOTED(m) ( ( (m) >> 20) & 0xF);
+#define FROMSQ(m) ( (m) & 0x7F)
+#define TOSQ(m) ( ( (m) >> 7) & 0x7F)
+#define CAPTURED(m) ( ( (m) >> 14) & 0xF) //what piece was captured
+#define PROMOTED(m) ( ( (m) >> 20) & 0xF)
 
 #define EPFLAG 0x40000
 #define PAWNFLAG 0x80000
@@ -41,6 +41,7 @@ class pieceListException : public std::exception{
 #define ISCAPTURE 0x7C000 //is it a capturing move?
 #define ISPROMOTION 0xF00000 //is it a promoting move?
 
+#define NOMOVE 0
 /***** GLOBALS *****/
 //init.cpp
 extern int SQ120[BOARD_SIZE];

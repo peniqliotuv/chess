@@ -156,7 +156,11 @@ int checkBoard(const board& b){
   pcount = countBits(temp_pawns[BLACK]);
   if (pcount != b.numPieces[bP]) throw pieceListException();
   pcount = countBits(temp_pawns[BOTH]);
-  if (pcount != (b.numPieces[wP] + b.numPieces[bP])) throw pieceListException();
+  if (pcount != (b.numPieces[wP] + b.numPieces[bP])) {
+    std::cout << "Piece count: " << pcount << " White: " << b.numPieces[wP] << " Black: " << b.numPieces[bP] <<
+    " Total: " << (b.numPieces[wP] + b.numPieces[bP]) << std::endl;
+    throw pieceListException();
+  }
 
   while (temp_pawns[WHITE]){
     int sq = popBit(&temp_pawns[WHITE]);
@@ -294,7 +298,6 @@ int parseFen(char* fen, board& b){
 
 void printBoard(const board& b){
   int sq, file, row, piece;
-
   std::cout << std::endl << "*******GAME BOARD*******" << std::endl;
   for (row = ROW_8; row >= ROW_1; row--){
     std::cout << row+1 << "   ";
@@ -305,7 +308,6 @@ void printBoard(const board& b){
     }
     std::cout << std::endl;
   }
-
   std::cout << std::endl << "    ";
   for (file = FILE_A; file <= FILE_H; ++file){
     char f = 'a' + file;

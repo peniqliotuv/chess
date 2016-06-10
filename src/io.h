@@ -5,6 +5,7 @@
 #include <iostream>
 #include <string>
 #include "movelist.h"
+#include "board.h"
 
 //Prints square in string format
 std::string printSquare(const int sq);
@@ -14,5 +15,6 @@ std::string printSquare(const int sq);
 std::string printMove(const int move);
 void printMoveList(moveList& list);
 void printPiece(int index);
+int parseMove(char* move, board& b);
 
 #endif
