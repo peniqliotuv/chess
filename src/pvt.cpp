@@ -1,8 +1,26 @@
 //pvt.cpp
 #include "pvt.h"
+#include "enums.h"
 #include <iostream>
 
+//Two megabytes
 const int PVT_SIZE = 0x100000 * 2;
+
+void PVTable::PVTSetMove(int mv, int index){
+  this->table[index].move = mv;
+}
+
+void PVTable::PVTSetPosKey(U64 key, int index){
+  this->table[index].posKey = key;
+}
+
+U64 PVTable::PVTGetPosKey(int index){
+  return (this->table[index].posKey);
+}
+
+int PVTable::PVTGetMove(int index){
+  return (this->table[index].move);
+}
 
 void clearPVT(PVTable* PVT){
   for (PVEntry* PVE = PVT->table; PVE < (PVT->numEntries + PVT->table); ++PVE){

@@ -1,6 +1,6 @@
 //pvt.h
-#ifndef PVTABLE
-#define PVTABLE
+#ifndef PV_TABLE
+#define PV_TABLE
 
 #include "enums.h"
 
@@ -14,6 +14,11 @@ class PVTable {
 public:
   int numEntries;
   PVEntry* table;
+
+  void PVTSetMove(int mv, int index);
+  void PVTSetPosKey(U64 key, int index);
+  U64 PVTGetPosKey(int index);
+  int PVTGetMove(int index);
 };
 
 void initPVT(PVTable* PVT);

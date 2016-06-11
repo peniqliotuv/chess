@@ -330,3 +330,23 @@ void printBoard(const board& b){
   b.castlePermission & blackQueenCastle ? (std::cout << 'q') : (std::cout << '-');
   std::cout << std::endl << "Position Key: " << std::hex<< b.posKey << std::endl << std::endl;
 }
+
+void storePVMove(const board& b, const int move){
+  //Where you want to store
+  int index = b.posKey % ((&b)->PVT->numEntries);
+  if (index < 0 || index > ((&b)->PVT->numEntries - 1)) std::cout << "PVT index is invalid" << std::endl;
+
+  (&b)->PVT->PVTSetMove(move, index);
+  (&b)->PVT->PVTSetPosKey(b.posKey, index);
+}
+
+int probePVT(const board& b){
+  //Where you want to store
+  int index = b.posKey % ((&b)->PVT->numEntries);
+  if (index < 0 || index > ((&b)->PVT->numEntries - 1)) std::cout << "PVT index is invalid" << std::endl;
+
+  if ((&b)->PVT->PVTGetPosKey(index) == b.posKey){
+    return ((&b)->PVT->PVTGetMove(index));
+  }
+  else return NOMOVE;
+}

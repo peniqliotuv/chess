@@ -50,5 +50,8 @@ void updateMateriaList(board &b);
 int checkBoard(const board& b);
 int parseFen(char* fen, board& b);
 void printBoard(const board& b);
+//PVT Functions
+void storePVMove(const board& b, const int move);
+int probePVT(const board& b);
 
 #endif
