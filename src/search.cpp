@@ -1,8 +1,17 @@
 //search.cpp
 #include "search.h"
+#include "evaluate.h"
+#include "makemove.h"
 #include "pvt.h"
+#include "io.h"
+#include "board.h"
+#include "movegenerator.h"
+#include "threats.h"
 #include <ctime>
+#include <limits>
 #include <iostream>
+
+#define MATE 29000
 
 bool isRepetition(const board& b){
   for (int i=(b.plyHistory - b.fiftyMoves); i<b.plyHistory-1; ++i){
@@ -18,10 +27,28 @@ bool isRepetition(const board& b){
 }
 
 void searchPosition(board& b, searchInfo* search){
+  int bestMove = NOMOVE;
+  int bestScore = std::numeric_limits<int>::min(); // Negative infinity
+  int currDepth = 0;
+  int pvMoves = 0;
 
+  clearForSearch(b, search);
+  for (currDepth = 1; currDepth<= search->depth; ++currDepth){
+                                //Alpha = - infinity              //Beta = infinity
+    bestScore = alphaBetaSearch(std::numeric_limits<int>::min(), std::numeric_limits<int>::max(), currDepth, b, search, true);
+    pvMoves = getPVLine(currDepth, b);
+    bestMove = b.PVArray[0];
+    std::cout << "Depth: " << currDepth << " Score: " << bestScore << " move: "
+    << printMove(bestMove) << " Nodes: " << search->nodes << std::endl;
+
+    for (int i=0; i< pvMoves; ++i){
+      std::cout << printMove(b.PVArray[i]);
+    }
+    std::cout << std::endl;
+  }
 }
 
-void checkUP(){
+void checkUp(){
   ///
 }
 
@@ -46,9 +73,53 @@ void clearForSearch(board& b, searchInfo* search){
   search->nodes = 0;
 }
 
-int alphaBetaSearch(int alpha, int beta, int depth, board& b, searchInfo* search, int nullMove){
-  return 0;
-  //placeholder
+int alphaBetaSearch(int alpha, int beta, int depth, board& b, searchInfo* search, bool nullMove){
+  if (checkBoard(b) != 1) std::cout << "CHECKBOARD FAILED" << std::endl;
+  if (depth == 0){
+    search->nodes++;
+    return evalPosition(b);
+  }
+  search->nodes++;
+  if (isRepetition(b) || b.fiftyMoves >= 100){
+    return 0; //draw
+  }
+  if (b.ply > MAXDEPTH - 1){
+    return evalPosition(b); //too deep
+  }
+
+  moveList* list = new moveList;
+  generateAllMoves(b, list);
+  int legal = 0;
+  int oldAlpha = alpha;
+  int bestMove = NOMOVE;
+  int score = std::numeric_limits<int>::min();
+
+  for (int i=0; i<list->getCount(); ++i){
+    int move = list->ml_getMove(i);
+    if (!makeMove(b, move)){
+      continue;
+    }
+    legal++;
+    score = -alphaBetaSearch(-beta, -alpha, depth-1, b, search, true); //negamax
+    takeMove(b);
+
+    if (score > alpha){
+      if (score >= beta) return beta; //Beta cutoff
+      alpha = score;
+      bestMove = move;
+    }
+  }
+  if (legal == 0){
+    if (sqAttacked(b.kingSquare[b.side], b.side^1, b)){
+      return -MATE + b.ply;
+    }
+    else return 0;
+  }
+  if (alpha != oldAlpha){ //alpha improved
+    storePVMove(b, bestMove);
+  }
+  delete list;
+  return alpha;
 }
 
 int quiescenceSearch(int alpha, int beta, board& b, searchInfo* search){

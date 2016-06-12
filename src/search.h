@@ -25,7 +25,7 @@ bool isRepetition(const board& b);
 void searchPosition(board& b, searchInfo* info);
 void checkUp(); //Checks if we should stop searching (timer up, etc).
 void clearForSearch(board& b, searchInfo* info); //Clears heuristics
-int alphaBetaSearch(int alpha, int beta, int depth, board& b, searchInfo* info, int nullMove);
-int quiescenceSearch(int alpha, int beta, board& b, searchInfo* info);
+int alphaBetaSearch(int alpha, int beta, int depth, board& b, searchInfo* info, bool nullMove);
+int quiescenceSearch(int alpha, int beta, board& b, searchInfo* info); //reduces horizon effect
 
 #endif
