@@ -30,6 +30,10 @@ struct board{
   PVTable* PVT;
   int PVArray[MAXDEPTH];
 
+  //Used for move-ordering
+  int searchHistory[13][BOARD_SIZE]; //
+  int searchKillers[2][MAXDEPTH]; //beta-cutoff
+
   /***** Methods *****/
   //Constructor and Destructor
   board();
