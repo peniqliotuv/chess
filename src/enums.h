@@ -42,6 +42,8 @@ class pieceListException : public std::exception{
 #define ISPROMOTION 0xF00000 //is it a promoting move?
 
 #define NOMOVE 0
+#define MAXDEPTH 64
+
 /***** GLOBALS *****/
 //init.cpp
 extern int SQ120[BOARD_SIZE];

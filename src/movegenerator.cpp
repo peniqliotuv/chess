@@ -3,6 +3,7 @@
 #include "threats.h"
 #include "validate.h"
 #include "movegenerator.h"
+#include "makemove.h"
 
 /***** MACROS *****/
 #define MOVE(f,t,ca,pro,fl) ( (f) | ((t) << 7) | ( (ca) << 14 ) | ( (pro) << 20 ) | (fl))
@@ -245,4 +246,20 @@ void generateAllMoves(const board& b, moveList* list){
     }
     piece = nonSlidingPieceArray[pieceIndex++];
   }
+}
+
+bool moveExists(board& b, const int move){
+	moveList* list = new moveList;
+	generateAllMoves(b, list);
+
+	for (int i=0; i<list->getCount(); ++i){
+		if (!makeMove(b, list->ml_getMove(i))){
+			continue;
+		}
+		takeMove(b);
+		if (list->ml_getMove(i) == move){
+			return true;
+		}
+	}
+	return false;
 }

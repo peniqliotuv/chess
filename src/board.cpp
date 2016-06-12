@@ -6,13 +6,24 @@
 #include "pvt.h"
 #include "hashkey.h"
 #include "undo.h"
+#include "makemove.h"
 #include "bitboard.h"
+#include "movegenerator.h"
 
 //Data Members:
 char pieceChar[] = ".PNBRQKpnbrqk";
 char sideChar[] = "wb-";
 char rowChar[] = "12345678";
 char fileChar[] = "abcdefgh";
+
+//Constructor and Destructor:
+board::board(){
+  PVT = new PVTable;
+}
+
+board::~board(){
+  delete PVT;
+}
 
 //Member Functions:
 void board::setUndoPosKey(){
@@ -333,9 +344,9 @@ void printBoard(const board& b){
 
 void storePVMove(const board& b, const int move){
   //Where you want to store
+  //NUMENTRIES NOT DEFINED
   int index = b.posKey % ((&b)->PVT->numEntries);
   if (index < 0 || index > ((&b)->PVT->numEntries - 1)) std::cout << "PVT index is invalid" << std::endl;
-
   (&b)->PVT->PVTSetMove(move, index);
   (&b)->PVT->PVTSetPosKey(b.posKey, index);
 }
@@ -344,9 +355,31 @@ int probePVT(const board& b){
   //Where you want to store
   int index = b.posKey % ((&b)->PVT->numEntries);
   if (index < 0 || index > ((&b)->PVT->numEntries - 1)) std::cout << "PVT index is invalid" << std::endl;
-
   if ((&b)->PVT->PVTGetPosKey(index) == b.posKey){
     return ((&b)->PVT->PVTGetMove(index));
   }
   else return NOMOVE;
+}
+
+int getPVLine(const int depth, board& b){
+  if (depth > MAXDEPTH) std::cout << "Error, depth > MAXDEPTH" << std::endl;
+
+  int move = probePVT(b);
+  int count = 0;
+
+  while (count < depth && move != NOMOVE){
+    if (count > MAXDEPTH) std::cout << "Error, count > MAXDEPTH" << std::endl;
+    if (moveExists(b, move)){
+      makeMove(b, move);
+      b.PVArray[count++] = move;
+    }
+    else break;
+    move = probePVT(b);
+  }
+
+  while (b.ply > 0){
+    takeMove(b);
+  }
+
+  return count;
 }

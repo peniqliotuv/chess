@@ -39,6 +39,7 @@ int main(){
 	parseFen(START_FEN, *b);
   char io[6];
   int mv = NOMOVE;
+  int max = 0;
   while (1){
     printBoard(*b);
     cout << "Please enter a move. " << std::endl;
@@ -50,11 +51,18 @@ int main(){
         continue;
       }
       else if (io[0] == 'p'){
-        perfTest(4, *b);
+        //perfTest(4, *b);
+        max = getPVLine(4, *b);
+        cout << "PV Line of " << max << " moves" << endl;
+        for (int i=0; i< max; ++i){
+          mv = b->PVArray[i];
+          cout << printMove(mv) << endl;
+        }
       }
       else {
         mv = parseMove(io, *b);
         if (mv != NOMOVE){
+          storePVMove(*b, mv);
           makeMove(*b, mv);
           if (isRepetition(*b)) cout << "REPETITION" << endl;
         }

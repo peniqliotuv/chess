@@ -28,8 +28,12 @@ struct board{
   int pieceList[13][10]; //13 total pieces, 10 possible of each piece
 
   PVTable* PVT;
+  int PVArray[MAXDEPTH];
 
   /***** Methods *****/
+  //Constructor and Destructor
+  board();
+  ~board();
   //Mutators for Undo Struct
   void setUndoPosKey();
   void setUndoMove(int move);
@@ -53,5 +57,6 @@ void printBoard(const board& b);
 //PVT Functions
 void storePVMove(const board& b, const int move);
 int probePVT(const board& b);
+int getPVLine(const int depth, board& b); //Returns how many lines we were able to put into the table
 
 #endif
