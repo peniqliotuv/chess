@@ -96,6 +96,15 @@ int alphaBetaSearch(int alpha, int beta, int depth, board& b, searchInfo* search
   int oldAlpha = alpha;
   int bestMove = NOMOVE;
   int score = -INFINITE;
+  int bestPVMove = probePVT(b);
+  if (bestPVMove != NOMOVE){
+    for (int i=0; i<list->getCount(); ++i){
+      if (list->ml_getMove(i) == bestPVMove){
+        list->ml_setScore(i, 2000000);
+        break; 
+      }
+    }
+  }
 
   for (int i=0; i<list->getCount(); ++i){
     pickNextMove(i, list);
@@ -121,6 +130,9 @@ int alphaBetaSearch(int alpha, int beta, int depth, board& b, searchInfo* search
       }
       alpha = score;
       bestMove = move;
+      if (!(move & ISCAPTURE)){ //Alpha cutoff
+        b.searchHistory[b.pieces[FROMSQ(bestMove)]][TOSQ(bestMove)] += depth; //prioritizes based on depth
+      }
     }
   }
   if (legal == 0){

@@ -46,7 +46,7 @@ void addQuietMove(const board& b, int move, moveList* list){
 		list->ml_setScore(list->getCount(), 800000);
 	}
 	else {
-		list->ml_setScore(list->getCount(), 0);
+		list->ml_setScore(list->getCount(), b.searchHistory[b.pieces[FROMSQ(move)]][TOSQ(move)]);
 	}
 
   list->incrementCount();
