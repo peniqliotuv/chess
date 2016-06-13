@@ -19,6 +19,9 @@ public:
 
   bool quit; //If quit == true, stop searching
   int stopped; //If stopped = true, recursively back out of search
+
+  float failHigh; //how good is our ordering
+  float failHighFirst;
 };
 
 bool isRepetition(const board& b);

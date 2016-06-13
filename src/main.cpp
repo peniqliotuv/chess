@@ -29,17 +29,18 @@
 #define CASTLE3 "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1"
 #define PERFTFEN "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1"
 #define PERFTFEN2 "n1n5/PPPk4/8/8/8/8/4Kppp/5N1N w - - 0 1"
+#define MATE_IN_THREE "2rr3k/pp3pp1/1nnqbN1p/3pN3/2pP4/2P3Q1/PPB4P/R4RK1 w - -"
 
 using namespace std;
 
 int main(){
   initialize();
   board* b = new board;
-
-	parseFen(START_FEN, *b);
+  searchInfo* search = new searchInfo;
+	parseFen(MATE_IN_THREE, *b);
   char io[6];
   int mv = NOMOVE;
-  int max = 0;
+  //int max = 0;
   while (1){
     printBoard(*b);
     cout << "Please enter a move. " << std::endl;
@@ -50,14 +51,9 @@ int main(){
         takeMove(*b);
         continue;
       }
-      else if (io[0] == 'p'){
-        //perfTest(4, *b);
-        max = getPVLine(4, *b);
-        cout << "PV Line of " << max << " moves" << endl;
-        for (int i=0; i< max; ++i){
-          mv = b->PVArray[i];
-          cout << printMove(mv) << endl;
-        }
+      else if (io[0] == 's'){
+        search->depth = 4;
+        searchPosition(*b, search);
       }
       else {
         mv = parseMove(io, *b);
@@ -75,14 +71,9 @@ int main(){
       cin.clear();
     }
   }
-	/*printBoard(*b);
-
-	moveList* list = new moveList;
-	generateAllMoves(*b, list);
-	printMoveList(*list);
-  perfTest(4, *b);*/
 
   //delete list;
   delete b;
+  delete search;
   return 0;
 }
