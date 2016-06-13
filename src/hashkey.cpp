@@ -10,7 +10,7 @@ U64 generatePosKey(const board& b){
   for (int i=0; i<BOARD_SIZE; ++i){
     piece = b.pieces[i];
     if (piece != NO_SQUARE && piece != EMPTY && piece != OFFBOARD){
-      if (piece < wP || piece > bK) std::cout << "err" << std::endl;
+      if (piece < wP || piece > bK) std::cout << "err13" << std::endl;
       finalKey ^= pieceKeys[piece][i];
     }
   }
@@ -20,11 +20,11 @@ U64 generatePosKey(const board& b){
   }
 
   if (b.enPassent != NO_SQUARE){
-    if (b.enPassent < 0 || b.enPassent > BOARD_SIZE) std::cout << "err" << std::endl;
+    if (b.enPassent < 0 || b.enPassent > BOARD_SIZE) std::cout << "err23 " << b.enPassent << std::endl;
     finalKey ^= pieceKeys[EMPTY][b.enPassent];
   }
 
-  if (b.castlePermission < 0 || b.castlePermission > 15) std::cout << "err" << std::endl;
+  if (b.castlePermission < 0 || b.castlePermission > 15) std::cout << "err28" << std::endl;
   finalKey ^= castleKeys[b.castlePermission];
 
   return finalKey;

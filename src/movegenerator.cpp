@@ -272,9 +272,4 @@ int initMVVLVA(){
 			MVV_LVA_Scores[j][i] = victimScore[j] + 6 - (victimScore[i]/100);
 		}
 	}
-	for (int i=wP; i<=bK; ++i){
-		for (int j=wP; j<=bK; ++j){
-			std::cout << pieceChar[j] << " x " << pieceChar[i] << " = " << MVV_LVA_Scores[i][j] << std::endl;
-		}
-	}
 }

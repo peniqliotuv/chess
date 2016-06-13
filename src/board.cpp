@@ -88,7 +88,7 @@ void resetBoard(board &b){
     b.numPieces[i] = 0;
   }
 
-  initPVT(b.PVT);
+  //initPVT(b.PVT);
 
   b.kingSquare[0] = b.kingSquare[1] = NO_SQUARE;
   b.side = BOTH;

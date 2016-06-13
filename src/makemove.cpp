@@ -279,7 +279,7 @@ bool makeMove(board& b, int move){
   int promotedPiece = PROMOTED(move);
   if (promotedPiece != EMPTY){
     if (isPawn(promotedPiece)) std::cout << "error: promoted piece should not be a pawn" << std::endl;
-    if (!PieceValid(promotedPiece)) std::cout << "err" << std::endl;
+    if (!PieceValid(promotedPiece)) std::cout << "err282" << std::endl;
     clearPiece(to, b);
     addPiece(to, b, promotedPiece);
   }
