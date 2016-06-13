@@ -113,6 +113,10 @@ int alphaBetaSearch(int alpha, int beta, int depth, board& b, searchInfo* search
           search->failHighFirst++;
         }
         search->failHigh++;
+        if (!(move & ISCAPTURE)){ // If not capture move
+          b.searchKillers[1][b.ply] = b.searchKillers[0][b.ply];
+          b.searchKillers[0][b.ply] = move;
+        }
         return beta; //Beta cutoff
       }
       alpha = score;

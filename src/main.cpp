@@ -37,7 +37,7 @@ int main(){
         continue;
       }
       else if (io[0] == 's'){
-        search->depth = 5;
+        search->depth = 6;
         searchPosition(*b, search);
       }
       else {

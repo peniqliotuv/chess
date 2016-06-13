@@ -38,13 +38,23 @@ int MVV_LVA_Scores[13][13]; // P x Q, P X R, P X B ..... N X Q, N X R
 
 void addQuietMove(const board& b, int move, moveList* list){
   list->ml_setMove(list->getCount(), move);
-  list->ml_setScore(list->getCount(), 0);
+
+	if (b.searchKillers[0][b.ply] == move){
+		list->ml_setScore(list->getCount(), 900000); //Less than 1 million
+	}
+	else if (b.searchKillers[1][b.ply] == move){
+		list->ml_setScore(list->getCount(), 800000);
+	}
+	else {
+		list->ml_setScore(list->getCount(), 0);
+	}
+
   list->incrementCount();
 }
 
 void addCaptureMove(const board& b, int move, moveList* list){
   list->ml_setMove(list->getCount(), move);
-  list->ml_setScore(list->getCount(), MVV_LVA_Scores[CAPTURED(move)][b.pieces[FROMSQ(move)]]);
+  list->ml_setScore(list->getCount(), MVV_LVA_Scores[CAPTURED(move)][b.pieces[FROMSQ(move)]] + 1000000);
   list->incrementCount();
 }
 
@@ -98,7 +108,7 @@ void addBPMove(const board& b, const int from, const int to, moveList* list){
 
 void addEnPasMove(const board& b, int move, moveList* list){
   list->ml_setMove(list->getCount(), move);
-  list->ml_setScore(list->getCount(), 105); // P x P = 105
+  list->ml_setScore(list->getCount(), 1000105); // P x P = 105, + 1,000,000
   list->incrementCount();
 }
 
