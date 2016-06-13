@@ -1,5 +1,6 @@
 //init.cpp
 #include "init.h"
+#include "movegenerator.h"
 
 /***** MACROS *****/
 #define RAND_64 (	(U64)rand() | \
@@ -89,4 +90,5 @@ void initialize(){
   initBitMasks();
   initHashKeys();
 	initFileRow();
+	initMVVLVA();
 }

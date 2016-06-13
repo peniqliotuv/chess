@@ -31,6 +31,8 @@ const int pieceDir[13][8] = { //First index: piece | Second index: directions
 };
 //How far to loop through for each piece in pieceDir
 const int numDir[13] = {0, 0, 8, 4, 4, 8, 8, 0, 8, 4, 4, 8, 8};
+const int victimScore[13] = {0, 100, 200, 300, 400, 500, 600, 100, 200, 300, 400, 500, 600};
+int MVV_LVA_Scores[13][13]; // P x Q, P X R, P X B ..... N X Q, N X R
 
 void addQuietMove(const board& b, int move, moveList* list){
   list->ml_setMove(list->getCount(), move);
@@ -40,7 +42,7 @@ void addQuietMove(const board& b, int move, moveList* list){
 
 void addCaptureMove(const board& b, int move, moveList* list){
   list->ml_setMove(list->getCount(), move);
-  list->ml_setScore(list->getCount(), 0);
+  list->ml_setScore(list->getCount(), MVV_LVA_Scores[CAPTURED(move)][b.pieces[FROMSQ(move)]]);
   list->incrementCount();
 }
 
@@ -94,7 +96,7 @@ void addBPMove(const board& b, const int from, const int to, moveList* list){
 
 void addEnPasMove(const board& b, int move, moveList* list){
   list->ml_setMove(list->getCount(), move);
-  list->ml_setScore(list->getCount(), 0);
+  list->ml_setScore(list->getCount(), 105); // P x P = 105
   list->incrementCount();
 }
 
@@ -262,4 +264,17 @@ bool moveExists(board& b, const int move){
 		}
 	}
 	return false;
+}
+
+int initMVVLVA(){
+	for (int i=wP; i<= bK; ++i){
+		for (int j=wP; j<= bK; ++j){
+			MVV_LVA_Scores[j][i] = victimScore[j] + 6 - (victimScore[i]/100);
+		}
+	}
+	for (int i=wP; i<=bK; ++i){
+		for (int j=wP; j<=bK; ++j){
+			std::cout << pieceChar[j] << " x " << pieceChar[i] << " = " << MVV_LVA_Scores[i][j] << std::endl;
+		}
+	}
 }
