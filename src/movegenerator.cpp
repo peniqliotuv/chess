@@ -1,8 +1,10 @@
 //movegenerator.cpp
 #include <iostream>
 #include "threats.h"
+#include "movelist.h"
 #include "validate.h"
 #include "movegenerator.h"
+#include "move.h"
 #include "makemove.h"
 
 /***** MACROS *****/
@@ -272,4 +274,20 @@ int initMVVLVA(){
 			MVV_LVA_Scores[j][i] = victimScore[j] + 6 - (victimScore[i]/100);
 		}
 	}
+}
+
+void pickNextMove(int moveNum, moveList* list){
+	move temp;
+	int bestScore = 0;
+	int bestNum = moveNum;
+
+	for (int i=moveNum; i<list->getCount(); ++i){
+		if (list->ml_getScore(i) > bestScore){
+			bestScore = list->ml_getScore(i);
+			bestNum = i;
+		}
+	}
+		temp = list->moves[moveNum];
+		list->moves[moveNum] = list->moves[bestNum];
+		list->moves[bestNum] = temp;
 }

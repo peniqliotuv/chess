@@ -50,7 +50,7 @@ void searchPosition(board& b, searchInfo* search){
 }
 
 void checkUp(){
-  
+
 }
 
 void clearForSearch(board& b, searchInfo* search){
@@ -98,6 +98,7 @@ int alphaBetaSearch(int alpha, int beta, int depth, board& b, searchInfo* search
   int score = -INFINITE;
 
   for (int i=0; i<list->getCount(); ++i){
+    pickNextMove(i, list);
     int move = list->ml_getMove(i);
     if (!makeMove(b, move)){
       continue;

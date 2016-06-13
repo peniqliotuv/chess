@@ -6,12 +6,12 @@
 #include "move.h"
 
 class moveList {
-private:
+public:
   move moves[256];
   //Assuming a maximum of 256 moves for a given position
   int count;
   //How many moves are actually in the movelist
-public:
+//public:
   moveList();
   ~moveList();
   int getCount();

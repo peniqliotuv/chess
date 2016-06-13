@@ -22,5 +22,7 @@ bool moveExists(board& b, const int move);
 //Most Valuable Victim, Least Valuable Attacker
 int initMVVLVA();
 
+void pickNextMove(int moveNum, moveList* list);
+
 
 #endif
