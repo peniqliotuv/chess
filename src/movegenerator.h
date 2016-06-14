@@ -18,6 +18,7 @@ void addBPCaptureMove(const board& b, const int from, const int to, const int ca
 void addBPMove(const board& b, const int from, const int to, moveList* list);
 void addEnPasMove(const board& b, int move, moveList* list);
 void generateAllMoves(const board& b, moveList* list);
+void generateAllCaptureMoves(const board& b, moveList* list);
 bool moveExists(board& b, const int move);
 //Most Valuable Victim, Least Valuable Attacker
 int initMVVLVA();

@@ -262,6 +262,114 @@ void generateAllMoves(const board& b, moveList* list){
   }
 }
 
+void generateAllCaptureMoves(const board& b, moveList* list){
+	list->setCount(0);
+	if (!checkBoard(b)){
+		std::cout << "Error: board is incorrect" << std::endl;
+	}
+
+	int sq, targetSq;
+	int dir = 0;
+	int pieceIndex = 0;
+	int piece = EMPTY;
+
+	if (b.side == WHITE){
+		for (int i=0; i<b.numPieces[wP]; ++i){
+			sq = b.pieceList[wP][i];
+			if (!SqOnBoard(sq)){
+				std::cout << "Error: Square is not on board" << std::endl;
+			}
+			if (!SQOFFBOARD(sq) && pieceColor[b.pieces[sq+9]] == BLACK){
+				addWPCaptureMove(b, sq, sq+9, b.pieces[sq+9], list);
+			}
+			if (!SQOFFBOARD(sq) && pieceColor[b.pieces[sq+11]] == BLACK){
+				addWPCaptureMove(b, sq, sq+11, b.pieces[sq+11], list);
+			}
+			if (b.enPassent != NO_SQUARE){
+				if ((sq+9) == b.enPassent){
+					addEnPasMove(b, MOVE(sq, (sq+9), EMPTY, EMPTY, EPFLAG), list);
+				}
+				if ((sq+11) == b.enPassent){
+					addEnPasMove(b, MOVE(sq, (sq+11), EMPTY, EMPTY, EPFLAG), list);
+				}
+			}
+		}
+	}
+	else if (b.side == BLACK){
+		for (int i=0; i<b.numPieces[bP]; ++i){
+			sq = b.pieceList[bP][i];
+			if (!SqOnBoard(sq)){
+				std::cout << "Error: Square is not on board" << std::endl;
+			}
+			if (!SQOFFBOARD(sq) && pieceColor[b.pieces[sq-9]] == WHITE){
+				addBPCaptureMove(b, sq, sq-9, b.pieces[sq-9], list);
+			}
+			if (!SQOFFBOARD(sq) && pieceColor[b.pieces[sq-11]] == WHITE){
+				addBPCaptureMove(b, sq, sq-11, b.pieces[sq-11], list);
+			}
+			if (b.enPassent != NO_SQUARE){
+				if ((sq-9) == b.enPassent){
+					addEnPasMove(b, MOVE(sq, (sq-9), EMPTY, EMPTY, EPFLAG), list);
+				}
+				if ((sq-11) == b.enPassent){
+					addEnPasMove(b, MOVE(sq, (sq-11), EMPTY, EMPTY, EPFLAG), list);
+				}
+			}
+		}
+	}
+	//Sliding piece
+	pieceIndex = slidingPieceSide[b.side];
+	piece = slidingPieceArray[pieceIndex++];
+	while (piece != 0){
+		for (int i=0; i<b.numPieces[piece]; ++i){
+			sq = b.pieceList[piece][i];
+			if (!SqOnBoard(sq)){
+				std::cout << "ERROR: SQUARE NOT ON BOARD" << std::endl;
+			}
+			for (int j=0; j<numDir[piece]; ++j){
+				dir = pieceDir[piece][j];
+				targetSq = sq + dir;
+				while (!SQOFFBOARD(targetSq)){
+				// BLACK ^ 1 == WHITE, WHITE ^ 1 == BLACK
+					if (b.pieces[targetSq] != EMPTY){
+						if (pieceColor[b.pieces[targetSq]] == (b.side ^ 1)){
+							addCaptureMove(b, MOVE(sq, targetSq, b.pieces[targetSq], EMPTY, 0), list);
+						}
+						break;
+					}
+					targetSq += dir;
+				}
+			}
+		}
+		piece = slidingPieceArray[pieceIndex++];
+	}
+	//Non-sliding piece
+	pieceIndex = nonSlidingPieceSide[b.side];
+	piece = nonSlidingPieceArray[pieceIndex++];
+	while (piece != 0){
+		for (int i=0; i<b.numPieces[piece]; ++i){
+			sq = b.pieceList[piece][i];
+			if (!SqOnBoard(sq)){
+				std::cout << "ERROR: SQUARE NOT ON BOARD" << std::endl;
+			}
+			for (int j=0; j<numDir[piece]; ++j){
+				dir = pieceDir[piece][j];
+				targetSq = sq + dir;
+				if (SQOFFBOARD(targetSq)) {
+					continue;
+				}
+				if (b.pieces[targetSq] != EMPTY){
+					if (pieceColor[b.pieces[targetSq]] == (b.side ^ 1)){
+						addCaptureMove(b, MOVE(sq, targetSq, b.pieces[targetSq], EMPTY, 0), list);
+					}
+					continue;
+				}
+			}
+		}
+		piece = nonSlidingPieceArray[pieceIndex++];
+	}
+}
+
 bool moveExists(board& b, const int move){
 	moveList* list = new moveList;
 	generateAllMoves(b, list);

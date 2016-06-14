@@ -79,11 +79,12 @@ void clearForSearch(board& b, searchInfo* search){
 int alphaBetaSearch(int alpha, int beta, int depth, board& b, searchInfo* search, bool nullMove){
   if (checkBoard(b) != 1) std::cout << "CHECKBOARD FAILED" << std::endl;
   if (depth == 0){
-    search->nodes++;
-    return evalPosition(b);
+    //search->nodes++;
+    //return evalPosition(b);
+    return quiescenceSearch(alpha, beta, b, search);
   }
   search->nodes++;
-  if (isRepetition(b) || b.fiftyMoves >= 100){
+  if ((isRepetition(b) || b.fiftyMoves >= 100) && b.ply){
     return 0; //draw
   }
   if (b.ply > MAXDEPTH - 1){
@@ -101,7 +102,7 @@ int alphaBetaSearch(int alpha, int beta, int depth, board& b, searchInfo* search
     for (int i=0; i<list->getCount(); ++i){
       if (list->ml_getMove(i) == bestPVMove){
         list->ml_setScore(i, 2000000);
-        break; 
+        break;
       }
     }
   }
@@ -149,6 +150,73 @@ int alphaBetaSearch(int alpha, int beta, int depth, board& b, searchInfo* search
 }
 
 int quiescenceSearch(int alpha, int beta, board& b, searchInfo* search){
-  return 0;
-  //placeholder
+  //std::cout << " lol" ;
+  if (checkBoard(b) != 1) std::cout << "checkboard failed" << std::endl;
+  search->nodes++;
+
+  if (isRepetition(b) || b.fiftyMoves >= 100){
+    return 0; //draw
+  }
+
+  if (b.ply > MAXDEPTH - 1){
+    return evalPosition(b); //too deep
+  }
+
+  int score = evalPosition(b);
+
+  if (score >= beta){
+    return beta; //our position is already better than beta
+  }
+
+  if (score > alpha){
+    alpha = score;
+  }
+
+  moveList* list = new moveList;
+  generateAllCaptureMoves(b, list);
+
+  int legal = 0;
+  int oldAlpha = alpha;
+  int bestMove = NOMOVE;
+  score = -INFINITE;
+  int bestPVMove = probePVT(b);
+  if (bestPVMove != NOMOVE){
+    for (int i=0; i<list->getCount(); ++i){
+      if (list->ml_getMove(i) == bestPVMove){
+        list->ml_setScore(i, 2000000);
+        break;
+      }
+    }
+  }
+  
+  for (int i=0; i<list->getCount(); ++i){
+    //std::cout << i << std::endl;
+    pickNextMove(i, list);
+    int move = list->ml_getMove(i);
+    if (!makeMove(b, move)){
+      continue;
+    }
+    legal++;
+    score = -quiescenceSearch(-beta, -alpha, b, search); //negamax
+    takeMove(b);
+
+    if (score > alpha){
+      if (score >= beta) {
+        if (legal == 1){
+          search->failHighFirst++;
+        }
+        search->failHigh++;
+        return beta; //Beta cutoff
+      }
+      alpha = score;
+      bestMove = move;
+    }
+  }
+
+  if (alpha != oldAlpha){
+    storePVMove(b, bestMove);
+  }
+
+  delete list;
+  return alpha;
 }
