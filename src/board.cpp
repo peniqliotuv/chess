@@ -331,7 +331,7 @@ void printBoard(const board& b){
     char f = 'a' + file;
     std::cout << f << " ";
   }
-  std::cout << std::endl;
+  /*std::cout << std::endl;
   std::cout << "Side: " << sideChar[b.side] << std::endl;
   std::cout << "En Passent: " << std::dec << b.enPassent << std::endl; // In base-10
   std::cout << "Castle Permissions: ";
@@ -339,7 +339,7 @@ void printBoard(const board& b){
   b.castlePermission & whiteQueenCastle ? (std::cout << 'Q') : (std::cout << '-');
   b.castlePermission & blackKingCastle ? (std::cout << 'k') : (std::cout << '-');
   b.castlePermission & blackQueenCastle ? (std::cout << 'q') : (std::cout << '-');
-  std::cout << std::endl << "Position Key: " << std::hex<< b.posKey << std::endl << std::endl;
+  std::cout << std::endl << "Position Key: " << std::hex<< b.posKey << std::endl << std::endl;*/
 }
 
 void storePVMove(const board& b, const int move){
@@ -380,6 +380,5 @@ int getPVLine(const int depth, board& b){
   while (b.ply > 0){
     takeMove(b);
   }
-
   return count;
 }

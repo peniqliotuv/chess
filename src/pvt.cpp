@@ -40,5 +40,5 @@ void initPVT(PVTable* PVT){
   }
   PVT->table = new PVEntry [PVT->numEntries];
   clearPVT(PVT);
-  std::cout << "PVT intialization complete with " << PVT->numEntries << " entries." << std::endl;
+  //std::cout << "PVT intialization complete with " << PVT->numEntries << " entries." << std::endl;
 }

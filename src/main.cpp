@@ -7,7 +7,6 @@
 #include "bitboard.h"
 #include "board.h"
 #include "undo.h"
-#include "uci.h"
 #include "test.h"
 #include "movegenerator.h"
 #include "makemove.h"
@@ -25,7 +24,7 @@ int main(){
   searchInfo* search = new searchInfo;
   initPVT(b->PVT);
 
-  cout << "Welcome to PENIQLIOTUV! Type 'console' for console mode..." << endl;
+  cout << "Welcome to PENIQLIOTUV! Type 'play' to play against the AI!" << endl;
 
   char line[256];
 	while (true) {
@@ -36,20 +35,7 @@ int main(){
 			continue;
 		if (line[0] == '\n')
 			continue;
-		if (!strncmp(line, "uci",3)) {
-			UCILoop(*b, search);
-			if(search->quit == true)
-      break;
-			continue;
-		}
-    else if (!strncmp(line, "xboard",6))	{
-			XBoardLoop(*b, search);
-			if(search->quit == true){
-        break;
-      }
-			continue;
-		}
-    else if (!strncmp(line, "console",6))	{
+    if (!strncmp(line, "play",4))	{
 			consoleLoop(*b, search);
 			if(search->quit == true){
         break;
