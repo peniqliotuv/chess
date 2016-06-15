@@ -7,6 +7,7 @@
 #include "board.h"
 #include "movegenerator.h"
 #include "threats.h"
+#include "timer.h"
 #include <ctime>
 #include <iostream>
 
@@ -36,10 +37,15 @@ void searchPosition(board& b, searchInfo* search){
   for (currDepth = 1; currDepth<= search->depth; ++currDepth){
                             //Alpha = - infinity //Beta = infinity
     bestScore = alphaBetaSearch(-INFINITE, INFINITE, currDepth, b, search, true);
+    if (search->stopped == true){
+      break;
+    }
     pvMoves = getPVLine(currDepth, b);
     bestMove = b.PVArray[0];
-    std::cout << "Depth: " << std::dec << currDepth << " Score: " << std::dec << bestScore
-    << " move: " << printMove(bestMove) << " Nodes: " << std::dec << search->nodes << std::endl;
+    double timeDiff = getTime() - search->startTime;
+    std::cout << "info score cp " << std::dec << bestScore << " depth "
+    << currDepth << " nodes " << search->nodes << " time " <<
+    std::dec << (int) timeDiff << " ";
 
     for (int i=0; i< pvMoves; ++i){
       std::cout << printMove(b.PVArray[i]) << " ";
@@ -47,10 +53,13 @@ void searchPosition(board& b, searchInfo* search){
     std::cout << std::endl;
     std::cout << "Ordering: " << (search->failHighFirst)/(search->failHigh) << std::endl;
   }
+  std::cout << "Bestmove: " << printMove(bestMove) << std::endl;
 }
 
-void checkUp(){
-
+void checkUp(searchInfo* search){
+  if (search->timeSet == true && getTime() > search->stopTime){
+    search->stopped = true;
+  }
 }
 
 void clearForSearch(board& b, searchInfo* search){
@@ -67,10 +76,8 @@ void clearForSearch(board& b, searchInfo* search){
   clearPVT(b.PVT);
   b.ply = 0;
 
-  clock_t start;
-  start = clock();
-  search->startTime = 1000 * ((clock() - start) / (double) CLOCKS_PER_SEC);
-  search->stopped = 0;
+  search->startTime = getTime();
+  search->stopped = false;
   search->nodes = 0;
   search->failHigh = 0;
   search->failHighFirst = 0;
@@ -79,11 +86,15 @@ void clearForSearch(board& b, searchInfo* search){
 int alphaBetaSearch(int alpha, int beta, int depth, board& b, searchInfo* search, bool nullMove){
   if (checkBoard(b) != 1) std::cout << "CHECKBOARD FAILED" << std::endl;
   if (depth == 0){
-    //search->nodes++;
-    //return evalPosition(b);
     return quiescenceSearch(alpha, beta, b, search);
   }
+
+  if ((search->nodes & 2047) == 0){
+    checkUp(search);
+  }
+
   search->nodes++;
+
   if ((isRepetition(b) || b.fiftyMoves >= 100) && b.ply){
     return 0; //draw
   }
@@ -116,6 +127,10 @@ int alphaBetaSearch(int alpha, int beta, int depth, board& b, searchInfo* search
     legal++;
     score = -alphaBetaSearch(-beta, -alpha, depth-1, b, search, true); //negamax
     takeMove(b);
+
+    if (search->stopped == true){
+      return 0;
+    }
 
     if (score > alpha){
       if (score >= beta) {
@@ -150,8 +165,12 @@ int alphaBetaSearch(int alpha, int beta, int depth, board& b, searchInfo* search
 }
 
 int quiescenceSearch(int alpha, int beta, board& b, searchInfo* search){
-  //std::cout << " lol" ;
   if (checkBoard(b) != 1) std::cout << "checkboard failed" << std::endl;
+
+  if ((search->nodes & 2047) == 0){
+    checkUp(search);
+  }
+
   search->nodes++;
 
   if (isRepetition(b) || b.fiftyMoves >= 100){
@@ -188,9 +207,8 @@ int quiescenceSearch(int alpha, int beta, board& b, searchInfo* search){
       }
     }
   }
-  
+
   for (int i=0; i<list->getCount(); ++i){
-    //std::cout << i << std::endl;
     pickNextMove(i, list);
     int move = list->ml_getMove(i);
     if (!makeMove(b, move)){
@@ -199,6 +217,9 @@ int quiescenceSearch(int alpha, int beta, board& b, searchInfo* search){
     legal++;
     score = -quiescenceSearch(-beta, -alpha, b, search); //negamax
     takeMove(b);
+    if (search->stopped == true){
+      return 0;
+    }
 
     if (score > alpha){
       if (score >= beta) {

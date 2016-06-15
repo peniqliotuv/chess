@@ -1,5 +1,6 @@
 //main.cpp
 #include <iostream>
+#include "timer.h"
 #include "enums.h"
 #include "bitboard.h"
 #include "board.h"
@@ -38,6 +39,8 @@ int main(){
       }
       else if (io[0] == 's'){
         search->depth = 6;
+        search->startTime = getTime();
+        search->stopTime = getTime() + 200000;
         searchPosition(*b, search);
       }
       else {

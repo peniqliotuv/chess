@@ -114,9 +114,9 @@ void addEnPasMove(const board& b, int move, moveList* list){
 
 void generateAllMoves(const board& b, moveList* list){
   list->setCount(0);
-  if (!checkBoard(b)){
-    std::cout << "Error: board is incorrect" << std::endl;
-  }
+  //if (!checkBoard(b)){
+  //  std::cout << "Error: board is incorrect" << std::endl;
+  //}
 
   int sq, targetSq;
   int dir = 0;
