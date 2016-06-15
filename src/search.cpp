@@ -42,24 +42,53 @@ void searchPosition(board& b, searchInfo* search){
     }
     pvMoves = getPVLine(currDepth, b);
     bestMove = b.PVArray[0];
-    double timeDiff = getTime() - search->startTime;
-    std::cout << "info score cp " << std::dec << bestScore << " depth "
-    << currDepth << " nodes " << search->nodes << " time " <<
-    std::dec << (int) timeDiff << " ";
 
-    for (int i=0; i< pvMoves; ++i){
-      std::cout << printMove(b.PVArray[i]) << " ";
+    if (search->gameMode == UCIMODE){
+      double timeDiff = getTime() - search->startTime;
+      std::cout << "info score cp " << std::dec << bestScore << " depth "
+      << currDepth << " nodes " << search->nodes << " time " <<
+      std::dec << (int) timeDiff << " ";
     }
-    std::cout << std::endl;
-    //std::cout << "Ordering: " << (search->failHighFirst)/(search->failHigh) << std::endl;
+    else if (search->gameMode == XBOARDMODE && search->postThinking == true){
+      double timeDiff = (getTime() - search->startTime)/10;
+      std::cout << std::dec << currDepth << " " << bestScore << " " <<
+      (int) timeDiff << " " << search->nodes << " ";
+    }
+    else if (search->postThinking == true){
+      double timeDiff = getTime() - search->startTime;
+      std::cout << std::dec << "score:" << bestScore << " depth:" <<
+      currDepth << " nodes:" << search->nodes << " time:" <<
+      (int) timeDiff << "(ms) ";
+    }
+    if(search->gameMode == UCIMODE || search->postThinking == true) {
+			pvMoves = getPVLine(currDepth, b);
+			std::cout << "pv";
+			for(int i = 0; i < pvMoves; ++i) {
+        std::cout << " " << printMove(b.PVArray[i]);
+			}
+			std::cout << std::endl;
+		}
   }
-  std::cout << "Bestmove: " << printMove(bestMove) << std::endl;
+  if(search->gameMode == UCIMODE) {
+    std::cout << "bestmove " << printMove(bestMove) << std::endl;
+	}
+  else if(search->gameMode == XBOARDMODE) {
+    std::cout << "move " << printMove(bestMove) << std::endl;
+		makeMove(b, bestMove);
+	}
+  else {
+    std::cout << std::endl << std::endl << "*** PENIQLIOTUV makes move ***"
+    << std::endl << std::endl << printMove(bestMove);
+		makeMove(b, bestMove);
+		printBoard(b);
+	}
 }
 
 void checkUp(searchInfo* search){
   if (search->timeSet == true && getTime() > search->stopTime){
     search->stopped = true;
   }
+  readInput(search);
 }
 
 void clearForSearch(board& b, searchInfo* search){

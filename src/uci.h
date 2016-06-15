@@ -10,6 +10,6 @@
 
 void parseGo(char* command, searchInfo* search, board& b);
 void parsePosition(char* command, board& b);
-void UCILoop();
+void UCILoop(board& b, searchInfo* search);
 
 #endif

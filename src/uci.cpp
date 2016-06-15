@@ -100,15 +100,12 @@ void parsePosition(char* command, board& b){
   printBoard(b);
 }
 
-void UCILoop(){
+void UCILoop(board& b, searchInfo* search){
+  search->gameMode = UCIMODE;
   char command[INPUTBUFFER];
   std::cout << "id name PENIQLIOTUV" << std::endl;
   std::cout << "id author JerryTsui" << std::endl;
   std::cout << "uciok" << std::endl;
-
-  board* b = new board;
-  initPVT(b->PVT);
-  searchInfo* search = new searchInfo;
 
   while (true){
     std::cin.getline(command, INPUTBUFFER);
@@ -118,13 +115,13 @@ void UCILoop(){
         continue;
     }
     else if (!strncmp(command, "position", 8)) {
-        parsePosition(command, *b);
+        parsePosition(command, b);
     }
     else if (!strncmp(command, "ucinewgame", 10)) {
-        parsePosition("position startpos\n", *b);
+        parsePosition("position startpos\n", b);
     }
     else if (!strncmp(command, "go", 2)) {
-        parseGo(command, search, *b);
+        parseGo(command, search, b);
     }
     else if (!strncmp(command, "quit", 4)) {
         search->quit = true;
@@ -137,7 +134,5 @@ void UCILoop(){
     }
     if(search->quit) break;
   }
-  delete b;
-  delete search;
   return;
 }

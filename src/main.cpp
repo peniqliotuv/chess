@@ -1,5 +1,7 @@
 //main.cpp
+//Jerry Tsui, 2016
 #include <iostream>
+#include <string>
 #include "timer.h"
 #include "enums.h"
 #include "bitboard.h"
@@ -13,61 +15,50 @@
 #include "search.h"
 #include "io.h"
 #include "threats.h"
-
-//FOR TESTING PURPOSES
-#define MATE_IN_THREE "2rr3k/pp3pp1/1nnqbN1p/3pN3/2pP4/2P3Q1/PPB4P/R4RK1 w - -"
-#define TESTFEN "r1b1k2r/ppppnppp/2n2q2/2b5/3NP3/2P1B3/PP3PPP/RN1QKB1R w KQkq - 0 1"
-
+#include "xboard.h"
 
 using namespace std;
 
 int main(){
   initialize();
-  UCILoop();
-  /*
   board* b = new board;
-  initPVT(b->PVT);
   searchInfo* search = new searchInfo;
-	parseFen(TESTFEN, *b);
-  char io[6];
-  int mv = NOMOVE;
-  while (1){
-    printBoard(*b);
-    cout << "Please enter a move. " << std::endl;
-    cin.getline(io, 6);
-    if (!cin.fail()){
-      if (io[0] == 'q') break;
-      else if (io[0] == 't') {
-        takeMove(*b);
-        continue;
-      }
-      else if (io[0] == 's'){
-        search->depth = 6;
-        search->startTime = getTime();
-        search->stopTime = getTime() + 200000;
-        searchPosition(*b, search);
-      }
-      else {
-        mv = parseMove(io, *b);
-        if (mv != NOMOVE){
-          storePVMove(*b, mv);
-          makeMove(*b, mv);
-          if (isRepetition(*b)) cout << "REPETITION" << endl;
-        }
-        else {
-          cout << "Failed to parse move" << endl;
-        }
-      }
-    }
-    else if (cin.fail()){
-      cin.clear();
-    }
-  }
+  initPVT(b->PVT);
 
-  //delete list;
-  delete b;
-  delete search;*/
+  cout << "Welcome to PENIQLIOTUV! Type 'console' for console mode..." << endl;
 
+  char line[256];
+	while (true) {
+		memset(&line[0], 0, sizeof(line));
 
+		fflush(stdout);
+		if (!fgets(line, 256, stdin))
+			continue;
+		if (line[0] == '\n')
+			continue;
+		if (!strncmp(line, "uci",3)) {
+			UCILoop(*b, search);
+			if(search->quit == true)
+      break;
+			continue;
+		}
+    else if (!strncmp(line, "xboard",6))	{
+			XBoardLoop(*b, search);
+			if(search->quit == true){
+        break;
+      }
+			continue;
+		}
+    else if (!strncmp(line, "console",6))	{
+			consoleLoop(*b, search);
+			if(search->quit == true){
+        break;
+      }
+			continue;
+		}
+    else if(!strncmp(line, "quit",4))	{
+			break;
+		}
+	}
   return 0;
 }

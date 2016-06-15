@@ -83,6 +83,7 @@ extern const int numDir[13];
 extern const int castlePermArray[120];
 
 /***** ENUMERATIONS *****/
+enum {UCIMODE, XBOARDMODE, CONSOLEMODE};
 enum {EMPTY, wP, wN, wB, wR, wQ, wK, bP, bN, bB, bR, bQ, bK};
 enum FILE_ENUM {FILE_A, FILE_B, FILE_C, FILE_D, FILE_E, FILE_F, FILE_G, FILE_H, FILE_NONE};
 enum ROW_ENUM {ROW_1, ROW_2, ROW_3, ROW_4, ROW_5, ROW_6, ROW_7, ROW_8, ROW_NONE};

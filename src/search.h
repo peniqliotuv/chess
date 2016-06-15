@@ -22,6 +22,9 @@ public:
 
   float failHigh; //how good is our ordering
   float failHighFirst;
+
+  int gameMode;
+  bool postThinking;
 };
 
 bool isRepetition(const board& b);
