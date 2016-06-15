@@ -2,12 +2,67 @@
 #include "uci.h"
 #include "pvt.h"
 #include "io.h"
+#include "timer.h"
 #include "makemove.h"
 #include <istream>
 #include <iostream>
 
 void parseGo(char* command, searchInfo* search, board& b){
+  char* ptr = NULL;
+  int depth = -1;
+  int movesToGo = 30;
+  int moveTime = -1;
+  int t = -1;
+  int inc = 0;
+  search->timeSet = false;
 
+  if ((ptr = strstr(command, "infinite"))){
+    ;
+  }
+  if ((ptr = strstr(command, "binc"))){ //black increment
+    inc = std::atoi(ptr + 5);
+  }
+  if ((ptr = strstr(command, "winc"))){ //white increment
+    inc = std::atoi(ptr + 5);
+  }
+  if ((ptr = strstr(command,"wtime")) && b.side == WHITE) {
+		t = std::atoi(ptr + 6);
+	}
+	if ((ptr = strstr(command,"btime")) && b.side == BLACK) {
+		t = std::atoi(ptr + 6);
+	}
+	if ((ptr = strstr(command,"movestogo"))) {
+		movesToGo = std::atoi(ptr + 10);
+	}
+	if ((ptr = strstr(command,"movetime"))) {
+		moveTime = std::atoi(ptr + 9);
+	}
+	if ((ptr = strstr(command,"depth"))) {
+		depth = std::atoi(ptr + 6);
+	}
+
+  if (moveTime != -1){
+    t = moveTime;
+    movesToGo = 1;
+  }
+  search->startTime = getTime();
+  search->depth = depth;
+
+  if (t != -1){
+    search->timeSet = true;
+    t /= movesToGo;
+    t -= 50; // to be safe, take 50ms off
+    search->stopTime = search->startTime + inc + t;
+  }
+
+  if (depth == -1 ){
+    search->depth = MAXDEPTH;
+  }
+
+  std::cout << "time: " << t << " start: " << search->startTime <<
+  " stop: " << search->stopTime << " depth: " << search->depth <<
+  " timeset: " << search->timeSet << std::endl;
+  searchPosition(b, search);
 }
 
 void parsePosition(char* command, board& b){

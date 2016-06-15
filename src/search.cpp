@@ -51,7 +51,7 @@ void searchPosition(board& b, searchInfo* search){
       std::cout << printMove(b.PVArray[i]) << " ";
     }
     std::cout << std::endl;
-    std::cout << "Ordering: " << (search->failHighFirst)/(search->failHigh) << std::endl;
+    //std::cout << "Ordering: " << (search->failHighFirst)/(search->failHigh) << std::endl;
   }
   std::cout << "Bestmove: " << printMove(bestMove) << std::endl;
 }
